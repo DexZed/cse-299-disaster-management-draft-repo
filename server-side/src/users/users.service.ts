@@ -7,31 +7,33 @@ import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>){}
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto) {
-     const createdUser = new this.userModel(createUserDto);
+    const createdUser = new this.userModel(createUserDto);
     return await createdUser.save();
-
   }
 
-  async  findAll() {
+  async findAll() {
     return await this.userModel.find();
-
   }
 
   async findOne(id: string) {
- const params = new Types.ObjectId(id);
+    const params = new Types.ObjectId(id);
     return await this.userModel.findById(params);
   }
 
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const params = new Types.ObjectId(id);
 
- update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return await this.userModel.findByIdAndUpdate(params, updateUserDto, {
+      new: true,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+  async remove(id: string) {
+    const params = new Types.ObjectId(id);
 
+    return await this.userModel.findByIdAndDelete(params);
+  }
 }
