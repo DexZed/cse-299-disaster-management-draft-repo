@@ -10,7 +10,7 @@ export enum Role {
   Affected = 'affected',
   Volunteer = 'volunteer',
 }
-@Schema({timestamps: true})
+@Schema({timestamps: true,versionKey: false})
 @Schema()
 export class User {
   @Prop({ required: true })
