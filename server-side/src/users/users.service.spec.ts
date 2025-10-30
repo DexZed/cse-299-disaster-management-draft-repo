@@ -13,21 +13,16 @@ describe('UsersService', () => {
   const mockUser = { _id: '1', name: 'John' };
 
   const mockUserModel = {
-    new: jest.fn(),
-    constructor: jest.fn(),
     find: jest.fn().mockResolvedValue([mockUser]),
     findById: jest.fn().mockResolvedValue(mockUser),
     findByIdAndUpdate: jest.fn().mockResolvedValue({
       ...mockUser,
       name: 'Updated',
     }),
-    findByIdAndDelete: jest.fn().mockResolvedValue({ deleted: true })
+    findByIdAndDelete: jest.fn().mockResolvedValue({ deleted: true }),
   };
 
-  // For new this.userModel(dto)
-  const mockUserInstance = {
-    save: jest.fn().mockResolvedValue(mockUser),
-  };
+  const mockSave = jest.fn().mockResolvedValue(mockUser);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -36,13 +31,19 @@ describe('UsersService', () => {
         {
           provide: getModelToken(User.name),
           useValue: function (dto) {
-            return mockUserInstance;
+            return { ...dto, save: mockSave };
           },
         },
       ],
     })
       .overrideProvider(getModelToken(User.name))
-      .useValue(mockUserModel)
+      .useValue({
+        ...mockUserModel,
+        // `new this.userModel(dto)` calls this
+        constructor: function (dto) {
+          return { ...dto, save: mockSave };
+        },
+      })
       .compile();
 
     service = module.get<UsersService>(UsersService);
@@ -56,14 +57,9 @@ describe('UsersService', () => {
   describe('create', () => {
     it('should create a user', async () => {
       const dto: CreateUserDto = { name: 'John' } as any;
-      mockUserInstance.save.mockResolvedValue(mockUser);
-
-      // Because constructor is overriden
-      jest
-        .spyOn(model.prototype, 'save')
-        .mockResolvedValueOnce(mockUser as any);
-
       const result = await service.create(dto);
+
+      expect(mockSave).toHaveBeenCalled();
       expect(result).toEqual(mockUser);
     });
   });
