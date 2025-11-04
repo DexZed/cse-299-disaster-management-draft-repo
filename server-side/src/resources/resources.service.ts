@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { UpdateResourceDto } from './dto/update-resource.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Resources } from './entities/resource.entity';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class ResourcesService {
-  create(createResourceDto: CreateResourceDto) {
-    return 'This action adds a new resource';
+  constructor(@InjectModel(Resources.name) private resourcesModel: Model<Resources>){}
+  async create(createResourceDto: CreateResourceDto) {
+    const createdResource = new this.resourcesModel(createResourceDto);
+    return await createdResource.save();
+    
   }
 
-  findAll() {
-    return `This action returns all resources`;
+ async findAll() {
+    return await this.resourcesModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} resource`;
+ async findOne(id: string) {
+    const params = new Types.ObjectId(id);
+    return await this.resourcesModel.findById(params);
   }
 
-  update(id: number, updateResourceDto: UpdateResourceDto) {
-    return `This action updates a #${id} resource`;
+ async update(id: string, updateResourceDto: UpdateResourceDto) {
+    const params = new Types.ObjectId(id);
+    return await this.resourcesModel.findByIdAndUpdate(params, updateResourceDto, {
+      new: true,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} resource`;
-  }
+ async remove(id: string) {
+  const params = new Types.ObjectId(id);
+  return await this.resourcesModel.findByIdAndDelete(params);
+ 
+}
 }
