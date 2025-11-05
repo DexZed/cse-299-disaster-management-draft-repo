@@ -7,6 +7,7 @@ import configuration from './config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { ResourcesModule } from './resources/resources.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import { ResourcesModule } from './resources/resources.module';
     UsersModule,
 
     ResourcesModule,
+
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
