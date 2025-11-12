@@ -5,7 +5,7 @@ import { UpdateChatDto } from './dto/update-chat.dto';
 @Injectable()
 export class ChatService {
   // TODO : ADD Ai chat here 
-  handlerMessage(message:string){
+  handlerMessage(message:any){
     console.log(message)
     return `Received: ${message}`;
   }
