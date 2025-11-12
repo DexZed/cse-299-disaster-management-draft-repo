@@ -7,7 +7,7 @@ export class ChatService {
   // TODO : ADD Ai chat here 
   handlerMessage(message:string){
     console.log(message)
-    return message;
+    return `Received: ${message}`;
   }
   // create(createChatDto: CreateChatDto) {
   //   return 'This action adds a new chat';
