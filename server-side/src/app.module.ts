@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from './config/configuration';
+import { validateEnv } from './config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { ResourcesModule } from './resources/resources.module';
@@ -12,14 +12,15 @@ import { ChatModule } from './chat/chat.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [configuration],
       isGlobal: true,
+      validate:validateEnv
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
+      
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('database.URL'),
+        uri: configService.get<string>('MONGO_DB_URL'),
         onConnectionCreate: (connection: Connection) => {
           connection.on('connected', () => console.log('connected'));
           connection.on('open', () => console.log('open'));
@@ -30,11 +31,8 @@ import { ChatModule } from './chat/chat.module';
         },
       }),
     }),
-
     UsersModule,
-
     ResourcesModule,
-
     ChatModule,
   ],
   controllers: [AppController],
