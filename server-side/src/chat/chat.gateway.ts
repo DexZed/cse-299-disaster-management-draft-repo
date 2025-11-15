@@ -6,8 +6,7 @@ import {
 } from '@nestjs/websockets';
 import { OnModuleInit } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
+import { CreateChatCompletionDto } from './dto/create-chat.dto';
 import { Server } from 'socket.io';
 
 // TODO: change origin for development
@@ -32,7 +31,23 @@ export class ChatGateway implements OnModuleInit {
       content: result,
     });
   }
-
+@SubscribeMessage('generateText')
+generateMessage(@MessageBody() body:CreateChatCompletionDto ){
+  if (!body.messages || body.messages.length === 0) {
+    this.server.emit('onMessage', {
+      msg: 'Error',
+      content: 'No messages provided',
+    });
+    return;
+  }
+  this.chatService.generateTextStream(body.messages,(chunk)=>{
+    this.server.emit('onMessage',{
+      msg:'Ai Response Chunk',
+      content:chunk
+    }
+    )
+  })
+}
   // @SubscribeMessage('createChat')
   // create(@MessageBody() createChatDto: CreateChatDto) {
   //   return this.chatService.create(createChatDto);

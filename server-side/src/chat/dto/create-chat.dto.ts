@@ -2,7 +2,7 @@ import {z} from 'zod';
 import {createZodDto} from 'nestjs-zod';
 
 const ChatMessageSchema = z.object({
-    role: z.string(),
+    role: z.enum(['user','model']),
     content: z.string()
 })
 
@@ -20,4 +20,4 @@ const ChatCompletionSchema = z.object({
 export class CreateChatCompletionDto extends createZodDto(ChatCompletionSchema){}
 
 
-export class CreateChatDto extends createZodDto(ChatMessageSchema){}
+export class ChatMessageDto extends createZodDto(ChatMessageSchema){}
