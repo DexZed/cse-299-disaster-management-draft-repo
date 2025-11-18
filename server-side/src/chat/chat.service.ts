@@ -14,6 +14,9 @@ export class ChatService {
   async generateTextStream(messages:ChatMessageDto[], onChunk:(chunk:string | undefined)=>void) {
     const chat = this.googleGenAI.chats.create({
       model:'gemini-2.5-flash',
+      config:{
+        systemInstruction:"Response should be in proper markdown format."
+      },
       history:messages?.map((message)=>({
         role:message.role,
         parts:[{text:message.content}]
