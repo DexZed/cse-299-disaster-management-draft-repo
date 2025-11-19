@@ -15,6 +15,26 @@ export class ChatService {
     const chat = this.googleGenAI.chats.create({
       model:'gemini-2.5-flash',
       config:{
+        systemInstruction:"Responses should be in proper markdown format."
+      },
+      history:messages?.map((message)=>({
+        role:message.role,
+        parts:[{text:message.content}]
+      }))
+    });
+    const lastMessage = messages[messages?.length-1];
+    if (!lastMessage) throw new Error('No last message found');
+    const stream = await chat.sendMessageStream({message:lastMessage.content});
+    for await (const chunk of stream){
+      onChunk(chunk.text);
+    }
+  }
+
+  // NEEDS APP SPECIFIC LLM TEXT AND EMBEDDING FROM SUPABASE
+ async create(messages:ChatMessageDto[], onChunk:(chunk:string | undefined)=>void) {
+    const chat = this.googleGenAI.chats.create({
+      model:'gemini-2.5-flash',
+      config:{
         systemInstruction:"Response should be in proper markdown format."
       },
       history:messages?.map((message)=>({
@@ -29,9 +49,6 @@ export class ChatService {
       onChunk(chunk.text);
     }
   }
-  // create(createChatDto: CreateChatDto) {
-  //   return 'This action adds a new chat';
-  // }
 
   // findAll() {
   //   return `This action returns all chat`;
