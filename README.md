@@ -11,10 +11,10 @@ All routes are prefixed with:
 /api/v1
 ```
 
-When hosted on Render:
+When hosted on Vercel:
 
 ```bash
-https://cse-299-disaster-management-draft-repo.onrender.com/api/v1
+https://cse-299-disaster-management-draft-r.vercel.app/api/v1
 
 ```
 
@@ -268,7 +268,7 @@ NameSpace
 ```
 Socket URL when hosted:
 ```http
-wss://cse-299-disaster-management-draft-repo.onrender.com/chat
+wss://cse-299-disaster-management-draft-r.vercel.app/chat
 
 ```
 
@@ -329,7 +329,7 @@ export const API_URL = "http://10.0.2.2:3000/api/v1";
 
 Hosted:
 ```typecript
-export const API_URL = "https://cse-299-disaster-management-draft-repo.onrender.com/api/v1"
+export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1"
 ```
 
 ## 📡 REST API Calls (Expo Example)
@@ -337,7 +337,7 @@ export const API_URL = "https://cse-299-disaster-management-draft-repo.onrender.
 ### 1. Generic API Client
 #### src/core/api.ts
 ```typescript
-export const API_URL = "https://cse-299-disaster-management-draft-repo.onrender.com/api/v1";
+export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1";
 
 export async function api(path, options = {}) {
   const res = await fetch(`${API_URL}${path}`, {
@@ -354,7 +354,7 @@ export async function api(path, options = {}) {
 
 Hosted:
 ```ts
-export const API_URL = "https://cse-299-disaster-management-draft-repo.onrender.com/api/v1"
+export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1"
 ```
 
 ### 👤 Example — Create User
@@ -404,7 +404,7 @@ npm install socket.io-client
 ```ts
 import { io } from "socket.io-client";
 
-const socket = io("https://cse-299-disaster-management-draft-repo.onrender.com/chat", {
+const socket = io("https://cse-299-disaster-management-draft-r.vercel.app/chat", {
   transports: ["websocket"],
 });
 
@@ -526,7 +526,7 @@ export function useChatLLM() {
   // INIT SOCKET ONCE
   useEffect(() => {
     const socket = io(
-      "https://cse-299-disaster-management-draft-repo.onrender.com/chat",
+      "https://cse-299-disaster-management-draft-r.vercel.app/chat",
       { transports: ["websocket"] }
     );
 
@@ -661,21 +661,21 @@ It accepts messages but still needs complete logic in chatService.
 ```
 ### 🌍 Deployment Note
 
-When deploying to Render:
+When deploying to Vercel:
 
 - Your server URL will be something like:
 ```http
-https://cse-299-disaster-management-draft-repo.onrender.com
+https://cse-299-disaster-management-draft-r.vercel.app
 ```
 
 - REST endpoints automatically become:
 ```http
-https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/users
-https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/resources
+https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users
+https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources
 
 ```
 
 - WebSocket namespace:
 ```http
-wss://cse-299-disaster-management-draft-repo.onrender.com/chat
+wss://cse-299-disaster-management-draft-r.vercel.app/chat
 ```
