@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server Documentation</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"
+      defer
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <style>
+        /* Custom styles to ensure code blocks and pre elements are visible and styled */
+        pre {
+            @apply p-4 rounded-lg overflow-x-auto bg-base-300 text-sm;
+        }
+        .code-block {
+            @apply p-3 bg-base-300 rounded-lg text-secondary font-mono text-sm;
+        }
+        .text-ts {
+            @apply text-yellow-400; /* Custom color for TypeScript */
+        }
+        .text-json {
+            @apply text-pink-400; /* Custom color for JSON */
+        }
+    </style>
+  </head>
+  <body class="bg-base-100 text-base-content min-h-screen">
+
+    <div class="container mx-auto p-4 md:p-8 lg:p-12 max-w-4xl">
+
+        <div class="card shadow-xl bg-primary text-primary-content mb-12 text-center">
+            <div class="card-body">
+                <h1 class="text-4xl font-extrabold tracking-tight">
+                    <span class="text-info">Disaster Management API</span> (NestJS)
+                </h1>
+                <p class="text-lg opacity-90">
+                    Backend server for the <span class="font-semibold">CSE-299 Disaster Management System.</span>
+                </p>
+                <p class="mt-2 text-sm opacity-80">
+                    Provides REST endpoints for <strong class="font-bold">Users</strong>, <strong class="font-bold">Resources</strong>, and <strong class="font-bold">AI Chat</strong>, along with <strong class="font-bold">WebSocket-based LLM streaming</strong>.
+                </p>
+            </div>
+        </div>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-primary-focus">🌍 Route Prefix & Configuration</h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card bg-base-200 shadow-lg">
+                    <div class="card-body p-5">
+                        <h3 class="card-title text-xl text-accent">Route Prefix</h3>
+                        <p>All routes are prefixed with:</p>
+                        <pre><code>/api/v1</code></pre>
+                        <p class="mt-2">When hosted on Vercel:</p>
+                        <pre><code>https://cse-299-disaster-management-draft-r.vercel.app/api/v1</code></pre>
+                    </div>
+                </div>
+                <div class="card bg-base-200 shadow-lg">
+                    <div class="card-body p-5">
+                        <h3 class="card-title text-xl text-accent">Global Configuration (main.ts)</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong class="font-semibold">Global prefix:</strong> <code>/api/v1</code></li>
+                            <li><strong class="font-semibold">CORS enabled</strong></li>
+                            <li><strong class="font-semibold">Port:</strong> Uses env or defaults to <code>3000</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-primary-focus">📦 Installation</h2>
+
+            <ol class="steps steps-vertical lg:steps-horizontal w-full">
+                <li data-content="1" class="step step-primary">
+                    <div class="text-left p-2">
+                        <p class="font-bold">Clone the repository</p>
+                        <pre><code class="language-bash">git clone https://github.com/YOUR_USERNAME/cse-299-disaster-management-draft-repo
+cd cse-299-disaster-management-draft-repo/server-side</code></pre>
+                    </div>
+                </li>
+                <li data-content="2" class="step step-primary">
+                    <div class="text-left p-2">
+                        <p class="font-bold">Install dependencies</p>
+                        <pre><code class="language-bash">npm install</code></pre>
+                    </div>
+                </li>
+                <li data-content="3" class="step step-primary">
+                    <div class="text-left p-2">
+                        <p class="font-bold">Environment Variables</p>
+                        <p class="text-sm">Create a <code class="code-block p-1">.env</code> file:</p>
+                        <pre><code class="language-bash">PORT=3000
+MONGO_DB_URL=YOUR_MONGO_CONNECTION_STRING
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY</code></pre>
+                    </div>
+                </li>
+                <li data-content="4" class="step step-primary">
+                    <div class="text-left p-2">
+                        <p class="font-bold">Run the server</p>
+                        <p class="text-sm">Development:</p>
+                        <pre><code class="language-bash">npm run start:dev</code></pre>
+                        <p class="text-sm mt-2">Production:</p>
+                        <pre><code class="language-bash">npm run build
+npm run start:prod</code></pre>
+                        <p class="mt-2 text-xs">Server will start at: <code>http://localhost:3000/api/v1</code></p>
+                    </div>
+                </li>
+            </ol>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 border-b pb-2 border-primary-focus">✨ API Reference</h2>
+
+            <div class="card bg-base-200 shadow-xl mb-8">
+                <div class="card-body p-6">
+                    <h3 class="card-title text-2xl text-secondary">👤 USERS MODULE</h3>
+
+                    <div class="overflow-x-auto my-4">
+                        <table class="table w-full table-zebra">
+                            <thead>
+                                <tr class="bg-base-300 text-base-content">
+                                    <th>Method</th>
+                                    <th>Route</th>
+                                    <th>Description</th>
+                                    <th>Payload/Params</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono text-success">POST</td>
+                                    <td class="font-mono">/users</td>
+                                    <td>Create User</td>
+                                    <td><code class="code-block p-1">User DTO (JSON object)</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-info">GET</td>
+                                    <td class="font-mono">/users</td>
+                                    <td>Get all users</td>
+                                    <td>None</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-info">GET</td>
+                                    <td class="font-mono">/users/:id</td>
+                                    <td>Get Single user</td>
+                                    <td><code class="code-block p-1">id (string: BSON)</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-warning">PATCH</td>
+                                    <td class="font-mono">/users/:id</td>
+                                    <td>Update user</td>
+                                    <td><code class="code-block p-1">id (string: BSON)</code> + <code class="code-block p-1">Update DTO</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-error">DELETE</td>
+                                    <td class="font-mono">/users/:id</td>
+                                    <td>Remove User</td>
+                                    <td><code class="code-block p-1">id (string: BSON)</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-base-300 p-4 rounded-lg">
+                            <p class="font-bold mb-2">User Interface</p>
+                            <pre><code class="language-ts text-ts">name: string
+email: string (valid email)
+password: string (min 8, must contain uppercase, number, special char)
+role: 'admin' | 'user' | 'affected' | 'volunteer'</code></pre>
+                            <p class="font-bold mt-3 mb-1">Password Rule Regex</p>
+                            <pre><code class="language-ts text-ts">const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/;</code></pre>
+                        </div>
+                        <div class="bg-base-300 p-4 rounded-lg">
+                            <p class="font-bold mb-2">Example Response: GET /users</p>
+                            <pre><code class="language-json text-json">{
+  "data": [
+    {
+      "_id": "65ab12f8a9",
+      "name": "John Doe",
+      "email": "john@mail.com",
+      "role": "volunteer"
+    }
+  ]
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-200 shadow-xl mb-8">
+                <div class="card-body p-6">
+                    <h3 class="card-title text-2xl text-secondary">📦 RESOURCES MODULE</h3>
+
+                    <div class="overflow-x-auto my-4">
+                        <table class="table w-full table-zebra">
+                            <thead>
+                                <tr class="bg-base-300 text-base-content">
+                                    <th>Method</th>
+                                    <th>Route</th>
+                                    <th>Description</th>
+                                    <th>Payload/Params</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono text-success">POST</td>
+                                    <td class="font-mono">/resources</td>
+                                    <td>Create Resource</td>
+                                    <td><code class="code-block p-1">Resource Interface (JSON object)</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-info">GET</td>
+                                    <td class="font-mono">/resources</td>
+                                    <td>Get all Resources</td>
+                                    <td>None</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-info">GET</td>
+                                    <td class="font-mono">/resources/:id</td>
+                                    <td>Get single resource</td>
+                                    <td><code class="code-block p-1">id (string: BSON)</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-warning">PATCH</td>
+                                    <td class="font-mono">/resources/:id</td>
+                                    <td>Update Resource</td>
+                                    <td><code class="code-block p-1">id (string: BSON)</code> + <code class="code-block p-1">Update DTO</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-error">DELETE</td>
+                                    <td class="font-mono">/resources/:id</td>
+                                    <td>Remove Resource</td>
+                                    <td><code class="code-block p-1">id (string: BSON)</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-base-300 p-4 rounded-lg">
+                            <p class="font-bold mb-2">Resource Interface</p>
+                            <pre><code class="language-ts text-ts">name: string
+description?: string
+quantity: number
+status: 'In-Use' | 'Assigned' | 'Out of Stock' | 'Available'
+location: string
+expiryDate?: Date</code></pre>
+                        </div>
+                        <div class="bg-base-300 p-4 rounded-lg">
+                            <p class="font-bold mb-2">Example Response: GET /resources all</p>
+                            <pre><code class="language-json text-json">{
+  "data": [
+    {
+      "_id":"655f4a7b9e7c8d1f2a3b4c5d"
+      "name": "Food",
+      "description": "Food Supply",
+      // ... more fields
+    }
+    // ... more resources
+  ]
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-200 shadow-xl mb-8">
+                <div class="card-body p-6">
+                    <h3 class="card-title text-2xl text-secondary">🤖 CHAT MODULE (WebSockets)</h3>
+
+                    <p class="font-semibold mt-3">⚡ WebSocket — AI Streaming</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-base-300 p-3 rounded-lg">
+                            <p>NameSpace:</p>
+                            <pre><code>/chat</code></pre>
+                        </div>
+                        <div class="bg-base-300 p-3 rounded-lg">
+                            <p>Socket URL (Hosted):</p>
+                            <pre><code>wss://cse-299-disaster-management-draft-r.vercel.app/chat</code></pre>
+                        </div>
+                    </div>
+
+                    <p class="font-semibold mt-4">Events</p>
+                    <div class="overflow-x-auto">
+                        <table class="table w-full table-compact">
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Payload DTO</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono"><code>message</code></td>
+                                    <td><code>any</code></td>
+                                    <td>Basic echo-like handler.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-accent"><code>generateText</code></td>
+                                    <td><code class="code-block p-1">Chat Completion Interface</code></td>
+                                    <td>Full LLM streaming.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-warning"><code>appAssistant</code></td>
+                                    <td><code class="code-block p-1">Chat Completion Interface</code></td>
+                                    <td><strong class="text-error">⚠️ Incomplete feature</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="font-semibold mt-4">Chat Completion Interface</p>
+                    <pre><code class="language-ts text-ts">messages: [
+  {
+    role: 'user' | 'model'
+    content: string
+  }
+]</code></pre>
+
+                    <p class="font-semibold mt-4">Streaming Behavior</p>
+                    <ul class="list-disc list-inside space-y-1 ml-4">
+                        <li>Server streams chunks back to the client via <code class="code-block p-1">onMessage</code> (chunk-by-chunk).</li>
+                        <li>The stream ends with a <code class="code-block p-1">streamComplete</code> (final event).</li>
+                    </ul>
+
+                    <p class="mt-2 text-sm text-info">Example stream message:</p>
+                    <pre><code class="language-json text-json">{
+  "msg": "Ai Response Chunk",
+  "content": "Hello, how can I assist..."
+}</code></pre>
+                    <p class="mt-2 text-sm text-info">Completion signal:</p>
+                    <pre><code class="language-json text-json">{
+  "msg": "Stream finished."
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-primary-focus">📱 Frontend Usage & Examples</h2>
+
+            <div class="card bg-base-200 shadow-xl mb-6">
+                <div class="card-body p-6">
+                    <h3 class="card-title text-xl text-accent">Base URL</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="font-bold text-sm">Local:</p>
+                            <pre><code class="language-ts text-ts">export const API_URL = "http://10.0.2.2:3000/api/v1";</code></pre>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">Hosted:</p>
+                            <pre><code class="language-ts text-ts">export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1"</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-200 shadow-xl mb-6">
+                <div class="card-body p-6">
+                    <h3 class="card-title text-xl text-accent">Generic API Client</h3>
+                    <p class="text-sm">Example implementation (<code class="code-block p-1">src/core/api.ts</code>):</p>
+                    <pre><code class="language-ts text-ts">export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1";
+
+export async function api(path, options = {}) {
+  const res = await fetch(`${API_URL}${path}`, {
+    headers: { "Content-Type": "application/json" },
+    ...options,
+  });
+
+  const json = await res.json();
+  if (!res.ok) throw json;
+  return json;
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="card bg-base-200 shadow-xl mb-6">
+                <div class="card-body p-6">
+                    <h3 class="card-title text-xl text-accent">⚡ WebSocket Usage (Expo)</h3>
+                    <p class="text-sm">Install client: <code class="code-block p-1">npm install socket.io-client</code></p>
+                    <pre><code class="language-ts text-ts">import { io } from "socket.io-client";
+
+const socket = io("wss://...", { transports: ["websocket"] });
+
+socket.on("connect", () => {
+  console.log("Connected:", socket.id);
+});
+
+socket.emit("generateText", {
+  messages: [{ role: "user", content: "Hello AI" }]
+});
+// ... listeners for onMessage & streamComplete
+</code></pre>
+                </div>
+            </div>
+
+            <div class="card bg-base-200 shadow-xl mb-6">
+                <div class="card-body p-6">
+                    <h3 class="card-title text-xl text-accent">🧠 Frontend AI Chat — Streaming & Hooks</h3>
+
+                    <p class="font-bold mt-2">📄 Message Interfaces</p>
+                    <pre><code class="language-ts text-ts">// Single message
+export interface ChatMessage {
+  role: "user" | "model"; 
+  content: string;
+}
+
+// The conversation history
+export type ChatHistory = ChatMessage[];
+</code></pre>
+
+                    <p class="font-bold mt-4">⚡ Handling Streaming Chunks</p>
+                    <p class="text-sm">The client must **accumulate** chunks sent via <code class="code-block p-1">onMessage</code> until <code class="code-block p-1">streamComplete</code>.</p>
+                    <pre><code class="language-ts text-ts">let buffer = "";
+
+socket.on("onMessage", (payload) => {
+  if (payload.msg === "Ai Response Chunk") {
+    buffer += payload.content;
+  }
+});
+
+socket.on("streamComplete", () => {
+  // Append fullModelMessage to conversation
+  // ...
+  buffer = ""; // reset
+});
+</code></pre>
+                </div>
+            </div>
+
+            <div class="card bg-neutral shadow-xl mb-6">
+                <div class="card-body p-6">
+                    <h3 class="card-title text-2xl text-warning">🪝 Safe React Hook Example: useChatLLM.ts</h3>
+                    <p class="text-sm text-neutral-content">
+                        <strong class="text-error">⚠️ Caution:</strong> This is an example usage. It is lengthy to demonstrate the full logic.
+                    </p>
+                    <pre class="bg-black text-white p-4 rounded-lg overflow-x-auto text-ts">
+<code class="language-ts">import { useCallback, useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
+import type { ChatHistory, ChatMessage } from "./types";
+
+export function useChatLLM() {
+  const [conversation, setConversation] = useState&lt;ChatHistory&gt;([]);
+  const [loading, setLoading] = useState(false);
+  const [lastResponse, setLastResponse] = useState("");
+
+  const socketRef = useRef&lt;Socket | null&gt;(null);
+  const bufferRef = useRef(""); // safe across renders
+
+  // INIT SOCKET ONCE
+  useEffect(() => {
+    // ... socket initialization
+    socketRef.current = socket;
+
+    // CHUNK LISTENER
+    socket.on("onMessage", (payload) => {
+      if (payload.msg === "Ai Response Chunk") {
+        bufferRef.current += payload.content;
+        setLastResponse(bufferRef.current); // live preview of stream
+      }
+    });
+
+    // STREAM COMPLETE
+    socket.on("streamComplete", () => {
+      const fullModelMessage: ChatMessage = { role: "model", content: bufferRef.current, };
+      setConversation((prev) => [...prev, fullModelMessage]);
+      bufferRef.current = "";
+      setLoading(false);
+    });
+
+    return () => {
+      socket.removeAllListeners();
+      socket.disconnect();
+    };
+  }, []);
+
+  // SEND USER MESSAGE + REQUEST STREAM
+  const sendMessage = useCallback((text: string) => {
+    // ... logic to update state and emit event
+    setLoading(true);
+    setLastResponse("");
+    bufferRef.current = "";
+  }, []);
+
+  return {
+    conversation,
+    sendMessage,
+    loading,
+    lastResponse, // live streamed content
+  };
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-primary-focus">🌍 Deployment Note</h2>
+
+            <div class="card bg-base-200 shadow-lg">
+                <div class="card-body p-5">
+                    <p>When deploying to <strong class="font-semibold">Vercel</strong>, your base URL will be:</p>
+                    <pre><code>https://cse-299-disaster-management-draft-r.vercel.app</code></pre>
+                    <p class="mt-3">REST endpoints automatically follow the prefix:</p>
+                    <pre><code>https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users</code></pre>
+                    <p class="mt-3">WebSocket namespace:</p>
+                    <pre><code>wss://cse-299-disaster-management-draft-r.vercel.app/chat</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+  </body>
+</html>
