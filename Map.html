@@ -1536,6 +1536,11 @@
                 total: locationMatches.length + areaMatches.length + resourceMatches.length
             };
 
+            // Escape for safe embedding in JS string attributes
+            function escapeJsString(s) {
+                return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+            }
+
             console.log('✅ Found:', locationMatches.length, 'locations,', areaMatches.length, 'areas,', resourceMatches.length, 'resources');
 
             // Update search results text with location search
@@ -1551,7 +1556,7 @@
                     let locationList = '<div style="margin-top: 10px; max-height: 200px; overflow-y: auto;">';
                     locationMatches.forEach((loc, idx) => {
                         locationList += `
-                            <div onclick="showLocationOnMap(allBangladeshLocations.find(l => l.name === '${loc.name.replace(/'/g, "\\'")}'))" 
+                            <div onclick="showLocationOnMap(allBangladeshLocations.find(l => l.name === '${escapeJsString(loc.name)}'))" 
                                  style="padding: 8px; margin: 4px 0; background: #e3f2fd; border-radius: 6px; cursor: pointer; 
                                         border-left: 3px solid #0088FE; transition: all 0.2s;"
                                  onmouseover="this.style.background='#bbdefb'; this.style.transform='translateX(3px)'"
