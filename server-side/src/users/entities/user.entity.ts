@@ -9,6 +9,7 @@ export enum Role {
   USER = 'user',
   Affected = 'affected',
   Volunteer = 'volunteer',
+  Victim = 'victim',
 }
 
 @Schema({timestamps: true,versionKey: false,strict: true})
@@ -22,7 +23,6 @@ export class User {
   email: string;
 
   @Prop({ required: true,})
-  
   password: string;
 
   @Prop({ required: true, enum: Role, default: Role.USER })
@@ -30,6 +30,11 @@ export class User {
 
   @Prop()
   profileImage?: string;
+
+  @Prop()
+  isAuthenticated?: boolean;
+  @Prop()
+  rememberMe?: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
