@@ -24,7 +24,6 @@ import { apiFetch } from '../constants/backend';
 
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EmergencyReportScreen() {
   const insets = useSafeAreaInsets();
