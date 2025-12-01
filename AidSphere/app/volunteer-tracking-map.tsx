@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchVolunteer, selectVolunteer } from '../store/slices/volunteerSlice';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // dynamic require for react-native-maps
 let MapView: any = null;

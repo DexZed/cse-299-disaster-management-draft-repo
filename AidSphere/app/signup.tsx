@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Signup removed — redirecting to signin
 export default function SignUpScreen() {

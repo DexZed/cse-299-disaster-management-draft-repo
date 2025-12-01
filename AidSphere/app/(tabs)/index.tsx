@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   const router = useRouter();

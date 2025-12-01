@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { acceptRequest, declineRequest, fetchRequests, selectAllRequests } from '../store/slices/requestsSlice';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function IncomingRequest() {
   const router = useRouter();
