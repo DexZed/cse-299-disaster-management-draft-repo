@@ -44,7 +44,7 @@ export class LocationService {
     };
 
     const loc = await this.locationModel.findOneAndUpdate(
-      { user_id },
+      { user_id: { $eq: userId } },
       { $set: update },
       { upsert: true, new: true, setDefaultsOnInsert: true, strict: false },
     ).populate('user_id', 'name role');
