@@ -1,3 +1,4 @@
+// TODO: Remove this in the future
 const { io } = require('socket.io-client');
 
 const URL = process.env.URL || 'http://localhost:3000';
