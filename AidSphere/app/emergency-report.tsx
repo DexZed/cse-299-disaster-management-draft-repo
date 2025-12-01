@@ -5,11 +5,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
   TextInput,
   ActivityIndicator,
   Alert,
-  Platform,
   Image,
   Modal,
   ImageBackground,
@@ -23,7 +21,7 @@ import { useRouter } from 'expo-router';
 
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
-import { useFocusEffect } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EmergencyReportScreen() {
   /**

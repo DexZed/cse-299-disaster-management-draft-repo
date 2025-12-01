@@ -8,6 +8,9 @@ const UserSchema = z.object({
   email: z.email(),
   password: mongoSafeString,
   role: z.enum(['admin', 'user', 'affected', 'volunteer']),
+  profileImage: mongoSafeString.optional(),
+  isAuthenticated: z.boolean().optional(),
+  rememberMe: z.boolean().optional(),
 }).strict();
 
 

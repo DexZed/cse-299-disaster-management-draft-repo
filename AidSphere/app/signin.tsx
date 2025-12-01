@@ -10,7 +10,6 @@ import {
   setEmail,
   setPassword,
   setRole,
-  setRememberMe,
   setUser,
 } from '../store/slices/authSlice';
 import {
