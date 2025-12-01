@@ -8,7 +8,7 @@ export enum Status {
   outOfStock = 'Out of Stock',
   available = 'Available',
 }
-@Schema({ timestamps: true, versionKey: false })
+@Schema({ timestamps: true, versionKey: false, strict: true })
 @Schema()
 export class Resources {
   @Prop({ required: true })

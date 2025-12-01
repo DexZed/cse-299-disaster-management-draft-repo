@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Location } from './schemas/location.schema';
 import { UpdateLocationDto } from './dto/update-location.dto';
 
@@ -24,8 +24,9 @@ export class LocationService {
     const helpType = dto.helpType;
     const priority = dto.priority;
     const image = dto.image;
+    const userId = new Types.ObjectId(user_id);
 
-    const user = await this.userModel.findById(user_id).lean();
+    const user = await this.userModel.findById(userId).lean();
     if (!user) {
       throw new Error('User not found');
     }
