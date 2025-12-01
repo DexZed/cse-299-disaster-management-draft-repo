@@ -36,7 +36,7 @@ export class LocationGateway implements OnGatewayConnection, OnGatewayDisconnect
     // event name: location_update
     this.server.emit('location_update', payload);
   }
-
+  //TODO: FIX update type from interface updateDTO
   // Handle incoming GPS messages from connected clients via WebSocket
   @SubscribeMessage('send_gps')
   async handleSendGps(@MessageBody() payload: any, @ConnectedSocket() client: Socket) {
@@ -51,6 +51,10 @@ export class LocationGateway implements OnGatewayConnection, OnGatewayDisconnect
         latitude: updated.latitude,
         longitude: updated.longitude,
         updated_at: updated.updated_at,
+        description: updated.description,
+        helpType: updated.helpType,
+        priority: updated.priority,
+        image: updated.image,
       };
 
       // Broadcast to everyone listening for live updates
