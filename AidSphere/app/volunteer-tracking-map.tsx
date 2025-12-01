@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
@@ -42,6 +44,12 @@ export default function VolunteerTrackingMapPage() {
    */
   const dispatch = useAppDispatch();
   const volunteerData = useAppSelector(selectVolunteer);
+  const insets = useSafeAreaInsets();
+  // Use a minimal top safe area to keep the title close to the
+  // status bar. Set to 0 to minimize the gap; adjust if overlapping
+  // occurs on devices with large notches.
+  const safeTop = -35;
+  const safeBottom = insets && typeof insets.bottom === 'number' ? insets.bottom : 0;
 
   const victimLat = parseFloat((params.victimLat as string) || '23.8103');
   const victimLon = parseFloat((params.victimLon as string) || '90.4125');
@@ -86,9 +94,10 @@ export default function VolunteerTrackingMapPage() {
   }, [volunteerPos, victimLat, victimLon]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { paddingTop: safeTop, paddingBottom: safeBottom }]} edges={["top","bottom"]}>
+      <StatusBar style="light" backgroundColor="#000" />
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <MaterialCommunityIcons name="arrow-left" size={22} color="#111" />
         </TouchableOpacity>
         <Text style={styles.title}>Volunteer Location</Text>
@@ -142,7 +151,7 @@ export default function VolunteerTrackingMapPage() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  header: { height: 56, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, borderBottomWidth: 1, borderBottomColor: '#f2f4f6' },
+    header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 4, borderBottomWidth: 1, borderBottomColor: '#f2f4f6' },
   backButton: { padding: 8, marginRight: 6 },
   title: { fontSize: 18, fontWeight: '700' },
   mapWrapper: { flex: 1, position: 'relative' },
