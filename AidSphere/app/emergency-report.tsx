@@ -8,7 +8,6 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
-  Platform,
   Image,
   Modal,
   ImageBackground,
@@ -25,7 +24,7 @@ import { apiFetch } from '../constants/backend';
 
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
-import { useFocusEffect } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EmergencyReportScreen() {
   const insets = useSafeAreaInsets();

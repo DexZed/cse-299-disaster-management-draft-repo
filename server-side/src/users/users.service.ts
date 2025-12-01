@@ -10,7 +10,7 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto) {
-    const createdUser = new this.userModel(createUserDto);
+    const createdUser = new this.userModel({...createUserDto});
     return await createdUser.save();
   }
 
@@ -26,8 +26,10 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     const params = new Types.ObjectId(id);
 
-    return await this.userModel.findByIdAndUpdate(params, updateUserDto, {
+    return await this.userModel.findByIdAndUpdate(params, {$set: updateUserDto}, {
       new: true,
+      runValidators: true,
+      strict:true
     });
   }
 

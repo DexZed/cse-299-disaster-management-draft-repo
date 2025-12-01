@@ -15,6 +15,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Linking } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchVolunteer, selectVolunteer } from '../store/slices/volunteerSlice';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // We'll try to dynamically require react-native-maps to avoid crashing if not installed
 let MapView: any = null;

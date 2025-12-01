@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Relief Management Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-logo {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 15px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .card-button {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .admin-card {
+            border: 3px solid rgba(220, 53, 69, 0.2);
+        }
+
+        .admin-card .card-button {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 12px 0;
+            justify-content: center;
+        }
+
+        .feature-badge {
+            padding: 3px 8px;
+            background: #f0f2ff;
+            color: #667eea;
+            border-radius: 14px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer p {
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-logo {
+                font-size: 4rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero-container">
+        <div class="hero-logo">🚨</div>
+        <h1 class="hero-title">Disaster Relief Management Platform</h1>
+        <p class="hero-subtitle">Real-Time Disaster Management for Bangladesh</p>
+
+        <div class="cards-grid">
+            <!-- Public Map Card -->
+            <a href="src/Map.html" class="feature-card">
+                <div class="card-icon">🗺️</div>
+                <h2 class="card-title">Public Emergency Map</h2>
+                <p class="card-description">View real-time emergency situations, affected areas, and resource
+                    centers across Bangladesh</p>
+                <div class="features-list">
+                    <span class="feature-badge">🛰️ Satellite View</span>
+                    <span class="feature-badge">📍 35 Locations</span>
+                    <span class="feature-badge">🔍 Live Search</span>
+                </div>
+                <button class="card-button">Open Map →</button>
+            </a>
+
+            <!-- Admin Dashboard Card -->
+            <a href="admin-dashboard.html" class="feature-card admin-card">
+                <div class="card-icon">👨‍💼</div>
+                <h2 class="card-title">Admin Dashboard</h2>
+                <p class="card-description">Complete control center for resource management, volunteer coordination,
+                    and emergency response</p>
+                <div class="features-list">
+                    <span class="feature-badge">📊 Analytics</span>
+                    <span class="feature-badge">💬 Live Chat</span>
+                    <span class="feature-badge">👥 Volunteers</span>
+                    <span class="feature-badge">📦 Resources</span>
+                </div>
+                <button class="card-button">Admin Login →</button>
+            </a>
+
+            <!-- Public Chat Card -->
+            <a href="Chatbox.html" class="feature-card">
+                <div class="card-icon">💬</div>
+                <h2 class="card-title">Report Emergency</h2>
+                <p class="card-description">Submit emergency reports, request assistance, and communicate with response
+                    teams</p>
+                <div class="features-list">
+                    <span class="feature-badge">📝 Report Form</span>
+                    <span class="feature-badge">📸 Photo Upload</span>
+                    <span class="feature-badge">⚡ Instant Alert</span>
+                </div>
+                <button class="card-button">Report Now →</button>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>🇧🇩 Bangladesh Emergency Response System • Real-Time Disaster Management</p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">© 2025 All Rights Reserved</p>
+        </div>
+    </div>
+</body>
+
+</html>
