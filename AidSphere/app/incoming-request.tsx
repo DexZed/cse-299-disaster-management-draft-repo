@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
@@ -19,11 +20,14 @@ export default function IncomingRequest() {
   const dispatch = useAppDispatch();
   const requests = useAppSelector(selectAllRequests);
   const [processing, setProcessing] = useState(false);
+  const insets = useSafeAreaInsets();
+  const safeTop = -12;
+  const safeBottom = (insets && insets.bottom) ? insets.bottom : 0;
 
   const handleAccept = async () => {
     try {
       setProcessing(true);
-      await dispatch(acceptRequest(id));
+      await dispatch(acceptRequest(Array.isArray(id) ? id[0] : id));
       // refresh list
       dispatch(fetchRequests());
       Alert.alert('Accepted', `You accepted request ${id}`);
@@ -38,7 +42,7 @@ export default function IncomingRequest() {
   const handleDecline = async () => {
     try {
       setProcessing(true);
-      await dispatch(declineRequest(id));
+      await dispatch(declineRequest(Array.isArray(id) ? id[0] : id));
       dispatch(fetchRequests());
       Alert.alert('Declined', `You declined request ${id}`);
       router.back();
@@ -50,9 +54,9 @@ export default function IncomingRequest() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.header}>Incoming Requests</Text>
+    <SafeAreaView style={[styles.container, { paddingTop: safeTop, paddingBottom: safeBottom }]} edges={["top","bottom"]}>
+      <ScrollView contentContainerStyle={[styles.content, { paddingTop: 0, paddingBottom: 18 }] }>
+        <Text style={[styles.headerText]}>Incoming Requests</Text>
         <Text style={styles.subheader}>New assignments from admin</Text>
 
         <View style={styles.card}>
@@ -101,9 +105,9 @@ export default function IncomingRequest() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f6f8fb' },
-  content: { padding: 18, paddingBottom: 40 },
-  header: { fontSize: 22, fontWeight: '700', marginBottom: 2 },
+  content: { padding: 12, paddingTop: 4, paddingBottom: 24 },
   subheader: { color: '#6b7280', marginBottom: 12 },
+  headerText: { marginBottom: 4, fontWeight: '700', fontSize: 20 },
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 14, borderLeftWidth: 4, borderLeftColor: '#2d6cdf', shadowColor: '#000', shadowOpacity: 0.03, elevation: 1 },
   cardHeaderRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
   iconBox: { width: 44, height: 44, borderRadius: 8, backgroundColor: '#eef5ff', alignItems: 'center', justifyContent: 'center', marginRight: 12 },

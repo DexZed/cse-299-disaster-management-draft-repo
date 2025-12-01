@@ -54,32 +54,6 @@ export default function VolunteerDashboardPage() {
         </View>
 
         <View style={styles.cardContainer}>
-          <TouchableOpacity activeOpacity={0.9} onPress={() => router.push('/incoming-request?id=1')}>
-            <View style={styles.statCardLarge}>
-              <Text style={styles.cardLabel}>Pending Requests</Text>
-              <Text style={styles.cardNumber}>{requests ? requests.filter((r: any) => r.status === 'pending').length : 0}</Text>
-              <View style={styles.cardHintRow}><MaterialCommunityIcons name="clock-outline" size={16} color="#2196f3" /><Text style={styles.cardHint}>  Awaiting response</Text></View>
-            </View>
-          </TouchableOpacity>
-
-          <View style={styles.statCardLarge}>
-            <Text style={styles.cardLabel}>Active Assignments</Text>
-            <Text style={styles.cardNumber}>{requests ? requests.filter((r: any) => r.status === 'accepted').length : 0}</Text>
-            <View style={styles.cardHintRow}><MaterialCommunityIcons name="send" size={16} color="#2196f3" /><Text style={styles.cardHint}>  In progress</Text></View>
-          </View>
-
-          <View style={styles.statCardLarge}>
-            <Text style={styles.cardLabel}>Completed Today</Text>
-            <Text style={styles.cardNumber}>0</Text>
-            <View style={styles.cardHintRow}><MaterialCommunityIcons name="check-circle-outline" size={16} color="#2e7d32" /><Text style={styles.cardHint}>  Successfully delivered</Text></View>
-          </View>
-
-          <View style={styles.statCardLarge}>
-            <Text style={styles.cardLabel}>Total Incidents</Text>
-            <Text style={styles.cardNumber}>{incidents ? incidents.length : 0}</Text>
-            <View style={styles.cardHintRow}><MaterialCommunityIcons name="map-marker-outline" size={16} color="#666" /><Text style={styles.cardHint}>  On map</Text></View>
-          </View>
-
           <View style={styles.mapSectionCard}>
             <Text style={styles.mapSectionTitle}>Incident Map</Text>
             <Text style={styles.mapSectionSubtitle}>Real-time view of reported incidents in your area</Text>
@@ -119,6 +93,32 @@ export default function VolunteerDashboardPage() {
                 <View style={styles.legendRow}><View style={[styles.legendDot, { backgroundColor: '#66bb6a' }]} /><Text style={styles.legendLabel}>Supply Camp</Text></View>
               </View>
             </View>
+          </View>
+
+          <TouchableOpacity activeOpacity={0.9} onPress={() => router.push('/incoming-request?id=1')}>
+            <View style={styles.statCardLarge}>
+              <Text style={styles.cardLabel}>Pending Requests</Text>
+              <Text style={styles.cardNumber}>{requests ? requests.filter((r: any) => r.status === 'pending').length : 0}</Text>
+              <View style={styles.cardHintRow}><MaterialCommunityIcons name="clock-outline" size={16} color="#2196f3" /><Text style={styles.cardHint}>  Awaiting response</Text></View>
+            </View>
+          </TouchableOpacity>
+
+          <View style={styles.statCardLarge}>
+            <Text style={styles.cardLabel}>Active Assignments</Text>
+            <Text style={styles.cardNumber}>{requests ? requests.filter((r: any) => r.status === 'accepted').length : 0}</Text>
+            <View style={styles.cardHintRow}><MaterialCommunityIcons name="send" size={16} color="#2196f3" /><Text style={styles.cardHint}>  In progress</Text></View>
+          </View>
+
+          <View style={styles.statCardLarge}>
+            <Text style={styles.cardLabel}>Completed Today</Text>
+            <Text style={styles.cardNumber}>0</Text>
+            <View style={styles.cardHintRow}><MaterialCommunityIcons name="check-circle-outline" size={16} color="#2e7d32" /><Text style={styles.cardHint}>  Successfully delivered</Text></View>
+          </View>
+
+          <View style={styles.statCardLarge}>
+            <Text style={styles.cardLabel}>Total Incidents</Text>
+            <Text style={styles.cardNumber}>{incidents ? incidents.length : 0}</Text>
+            <View style={styles.cardHintRow}><MaterialCommunityIcons name="map-marker-outline" size={16} color="#666" /><Text style={styles.cardHint}>  On map</Text></View>
           </View>
         </View>
       </ScrollView>

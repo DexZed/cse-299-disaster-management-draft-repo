@@ -3,9 +3,10 @@ import React, { useState, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { apiFetch } from '../constants/backend';
 import {
   setEmail,
   setPassword,
@@ -33,12 +34,14 @@ export default function SignInScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   // Redux state
   const { email, password, role, rememberMe } = useAppSelector((state) => state.auth);
   const { isLoading, error, showPassword } = useAppSelector((state) => state.ui);
 
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
+  const [showPwInfo, setShowPwInfo] = useState(false);
 
   // Validation function
   const validateForm = (): boolean => {
@@ -61,11 +64,9 @@ export default function SignInScreen() {
     dispatch(setLoading(true));
 
     try {
-      // Real API call using fetch.
-      // Replace AUTH_ENDPOINT with your backend URL or keep as a relative path if using a proxy.
-      const AUTH_ENDPOINT = '/api/auth/signin';
-
-      const resp = await fetch(AUTH_ENDPOINT, {
+      // Real API call using apiFetch helper.
+      // This will use the configured BACKEND_URL from app.json
+      const resp = await apiFetch('/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,8 +114,9 @@ export default function SignInScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inner}>
+    <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}
+      edges={["top", "bottom"]}>
+      <View style={[styles.inner, { paddingTop: 16 /* keep original spacing */ }] }>
         <Image source={require('../assets/images/app-logo-1.png')} style={styles.logo} resizeMode="contain" />
         <Text style={styles.title}>Sign in</Text>
         <Text style={styles.subtitle}>Please select your role</Text>
@@ -190,18 +192,50 @@ export default function SignInScreen() {
             placeholder="Enter your password"
             placeholderTextColor="#bdbdbd"
             value={password}
-            onChangeText={(value) => dispatch(setPassword(value))}
+            onChangeText={(value) => {
+              dispatch(setPassword(value));
+              // hide the info box when user updates password to valid length
+              if (value && value.length >= 8) setShowPwInfo(false);
+            }}
             secureTextEntry={!showPassword}
             editable={!isLoading}
           />
-          <TouchableOpacity onPress={() => dispatch(togglePasswordVisibility())}>
+          <TouchableOpacity onPress={() => dispatch(togglePasswordVisibility())} style={{ marginLeft: 6, marginRight: 6 }}>
             <MaterialCommunityIcons
               name={showPassword ? 'eye' : 'eye-off'}
               size={18}
               color="#bdbdbd"
             />
           </TouchableOpacity>
+
+          {/* Info icon - shows message when password is too short */}
+          {/** Determine if password is present and too short **/}
+          {
+            (() => {
+              const pwTooShort = !!password && password.length < 8;
+              return (
+                <TouchableOpacity
+                  onPress={() => pwTooShort && setShowPwInfo((s) => !s)}
+                  accessibilityLabel="Password information"
+                  accessibilityHint={pwTooShort ? 'Shows password length requirements' : 'Password requirements met'}
+                >
+                  <MaterialCommunityIcons
+                    name="information-outline"
+                    size={18}
+                    color={pwTooShort ? '#ff3b30' : '#bdbdbd'}
+                  />
+                </TouchableOpacity>
+              );
+            })()
+          }
         </View>
+
+        {/* Password info message shown when icon is tapped and password is too short */}
+        {password && password.length < 8 && showPwInfo && (
+          <View style={styles.passwordInfoBox}>
+            <Text style={styles.passwordInfoText}>Your password is too small. It must be 8 characters long or more.</Text>
+          </View>
+        )}
 
         {/* Remember me / Forgot password removed per request */}
 
@@ -469,5 +503,22 @@ const styles = StyleSheet.create({
     marginRight: 4,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  passwordInfoBox: {
+    alignSelf: 'flex-start',
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#fff7f7',
+    borderWidth: 1,
+    borderColor: '#ff3b30',
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 10,
+  },
+  passwordInfoText: {
+    color: '#ff3b30',
+    fontSize: 13,
+    fontWeight: '600',
   },
 });
