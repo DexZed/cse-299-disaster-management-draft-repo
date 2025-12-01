@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsEmail, Matches, MinLength } from 'class-validator';
+import { IsEmail } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
@@ -11,13 +11,13 @@ export enum Role {
   Volunteer = 'volunteer',
 }
 
-@Schema({timestamps: true,versionKey: false})
+@Schema({timestamps: true,versionKey: false,strict: true})
 @Schema()
 export class User {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true, unique: true})
+  @Prop({ required: true})
   @IsEmail()
   email: string;
 
