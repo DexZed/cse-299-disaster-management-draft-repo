@@ -60,7 +60,7 @@ Google Maps requires an API key to function. Follow these steps to get one:
 3. **Replace `YOUR_API_KEY` with your actual key**:
    ```html
    <script async defer
-       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1234567890abcdefghijklmnopqrstuv&callback=initMap&libraries=places">
+       src="https://maps.googleapis.com/maps/api/js?key=<example>&callback=initMap&libraries=places">
    </script>
    ```
 
@@ -390,3 +390,4 @@ The Google Map is fully responsive:
 **Status**: ✅ Ready (API Key Required)
 **Access**: http://localhost:5173/src/GoogleMap.html
 **Alternative**: Use Leaflet map (no API key needed) at http://localhost:5173/src/Map.html
+
