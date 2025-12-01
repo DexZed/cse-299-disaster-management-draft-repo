@@ -21,11 +21,8 @@ export class User {
   @IsEmail()
   email: string;
 
-  @Prop({ required: true, minlength: 8,match: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/})
-  @MinLength(8)
-  @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/, {
-    message: 'Password must contain at least one uppercase letter, one number, and one special character',
-  })
+  @Prop({ required: true,})
+  
   password: string;
 
   @Prop({ required: true, enum: Role, default: Role.USER })
@@ -36,3 +33,10 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+// @Prop({ required: true, minlength: 8,match: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/})
+//   @MinLength(8)
+//   @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/, {
+//     message: 'Password must contain at least one uppercase letter, one number, and one special character',
+//   })
+//   password: string;

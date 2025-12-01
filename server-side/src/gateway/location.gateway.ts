@@ -13,7 +13,7 @@ import { LocationService } from '../location/location.service';
 
 @WebSocketGateway({
   cors: { origin: '*', credentials: false },
-  namespace: '/', // root namespace
+  namespace: '/location', // root namespace
 })
 export class LocationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()

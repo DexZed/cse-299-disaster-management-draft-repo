@@ -15,7 +15,7 @@ export class LocationService {
   ) {}
 
   // Upsert location by user_id
-  async updateLocation(dto: any) {
+  async updateLocation(dto: UpdateLocationDto) {
     const user_id = dto.user_id;
     const latitude = dto.latitude;
     const longitude = dto.longitude;
