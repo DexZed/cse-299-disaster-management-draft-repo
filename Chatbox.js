@@ -1,6 +1,16 @@
 
 const MESSAGES_KEY = 'emergencyMessages';
 
+// Escape user controlled strings to mitigate XSS
+function escapeHtml(unsafe) {
+    return String(unsafe)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 /**
  * Get messages from localStorage
  * @returns {Array} Array of message objects
@@ -105,12 +115,12 @@ function renderMessages() {
 
     // Render message items
     messagesList.innerHTML = userMessages.map(msg => `
-        <div class="message-item status-${msg.status}" data-message-id="${msg.id}">
+        <div class="message-item status-${escapeHtml(msg.status)}" data-message-id="${escapeHtml(msg.id)}">
             <div class="message-header">
-                <span class="message-priority ${msg.priority}">${msg.priority}</span>
+                <span class="message-priority ${escapeHtml(msg.priority)}">${escapeHtml(msg.priority)}</span>
             </div>
             <div class="message-type">
-                ${getEmergencyIcon(msg.emergencyType)} ${capitalizeFirst(msg.emergencyType)}
+                ${getEmergencyIcon(msg.emergencyType)} ${escapeHtml(capitalizeFirst(msg.emergencyType))}
             </div>
             <div class="message-text">${escapeHtml(msg.description)}</div>
             <div class="message-meta">
@@ -118,8 +128,8 @@ function renderMessages() {
                 <span>🕒 ${formatDate(msg.timestamp)}</span>
             </div>
             <div class="message-meta">
-                <span>👥 People affected: ${msg.peopleAffected || 'N/A'}</span>
-                <span class="message-status ${msg.status}">${capitalizeFirst(msg.status)}</span>
+                <span>👥 People affected: ${escapeHtml(String(msg.peopleAffected)) || 'N/A'}</span>
+                <span class="message-status ${escapeHtml(msg.status)}">${escapeHtml(capitalizeFirst(msg.status))}</span>
             </div>
             ${msg.adminResponse ? `
                 <div class="admin-response">
