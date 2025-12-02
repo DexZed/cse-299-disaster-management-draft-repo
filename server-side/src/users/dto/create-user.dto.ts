@@ -1,5 +1,6 @@
 import { createZodDto } from 'nestjs-zod';
-import { mongoSafeString } from 'src/resources/dto/create-resource.dto';
+import { mongoSafeString } from '../../resources/dto/create-resource.dto';
+
 
 import { z } from 'zod';
 // const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/;
