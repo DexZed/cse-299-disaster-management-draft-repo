@@ -6,7 +6,7 @@ const UserSchema = z.object({
   name: mongoSafeString,
   email: z.email(),
   password: mongoSafeString,
-  role: z.enum(['admin', 'user', 'affected', 'volunteer']),
+  role: z.enum(['admin', 'user', 'affected', 'volunteer','victim']),
   profileImage: mongoSafeString.optional(),
   isAuthenticated: z.boolean().optional(),
   rememberMe: z.boolean().optional(),
