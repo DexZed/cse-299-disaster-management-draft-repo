@@ -11,7 +11,9 @@ const ResourcesSchema = z.object({
     description: mongoSafeString.optional(),
     quantity: z.number(),
     status: z.enum(['In-Use', 'Assigned', 'Out of Stock', 'Available']),
-    location: mongoSafeString,
+    longitude: z.number(),
+    latitude: z.number(),
+    image: z.string().optional(),
     expiryDate: z.date().optional(),
 
 }).strict();

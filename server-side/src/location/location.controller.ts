@@ -11,7 +11,7 @@ export class LocationController {
   ) {}
 
   @Post('update')
-  async update(@Body() body: any) {
+  async update(@Body() body: UpdateLocationDto) {
     try {
       const updated = await this.locationService.updateLocation(body);
       // Broadcast to WebSocket clients (frontend map listeners)
