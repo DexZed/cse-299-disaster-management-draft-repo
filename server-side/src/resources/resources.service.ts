@@ -25,8 +25,12 @@ export class ResourcesService {
 
  async update(id: string, updateResourceDto: UpdateResourceDto) {
     const params = new Types.ObjectId(id);
-    return await this.resourcesModel.findByIdAndUpdate(params, updateResourceDto, {
+    return await this.resourcesModel.findByIdAndUpdate(params, {
+      $set: updateResourceDto
+    }, {
       new: true,
+      runValidators: true,
+      strict: true
     });
   }
 

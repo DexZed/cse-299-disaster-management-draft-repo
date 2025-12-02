@@ -1,5 +1,6 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -23,9 +24,12 @@ const incidents = [
 
 export default function FullMapPage() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const safeTop = -32;
+  const safeBottom = insets && typeof insets.bottom === 'number' ? insets.bottom : 0;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { paddingTop: safeTop, paddingBottom: safeBottom }]} edges={["top","bottom"]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <MaterialCommunityIcons name="arrow-left" size={22} color="#111" />
@@ -67,7 +71,7 @@ export default function FullMapPage() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  header: { height: 56, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, borderBottomWidth: 1, borderBottomColor: '#f2f4f6' },
+  header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 0, borderBottomWidth: 1, borderBottomColor: '#f2f4f6' },
   backButton: { padding: 8, marginRight: 6 },
   title: { fontSize: 18, fontWeight: '700' },
   mapWrapper: { flex: 1 },
