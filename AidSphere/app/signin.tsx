@@ -6,7 +6,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { apiFetch } from '../constants/backend';
 import {
   setEmail,
   setPassword,
@@ -63,37 +62,12 @@ export default function SignInScreen() {
     dispatch(setLoading(true));
 
     try {
-      // Real API call using apiFetch helper.
-      // This will use the configured BACKEND_URL from app.json
-      const resp = await apiFetch('/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email.trim(),
-          password,
-          role,
-        }),
-      });
-
-      const data = await resp.json().catch(() => ({}));
-
-      if (!resp.ok) {
-        // backend may send { message } or { error }
-        const msg = data?.message || data?.error || 'Sign in failed';
-        dispatch(setError(String(msg)));
-        dispatch(setLoading(false));
-        return;
-      }
-
-      // Expecting server to return user object in data.user (or data)
-      const userData = data.user || data;
-      if (!userData) {
-        dispatch(setError('Invalid server response'));
-        dispatch(setLoading(false));
-        return;
-      }
+      // Create a demo user object based on selected role
+      const userData = {
+        id: `user-${role}-${Date.now()}`,
+        email: email.trim() || `${role}@example.com`,
+        role: role as 'volunteer' | 'victim',
+      };
 
       dispatch(setUser(userData));
       dispatch(setLoading(false));
