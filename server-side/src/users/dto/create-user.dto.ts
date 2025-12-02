@@ -4,7 +4,7 @@ import { z } from 'zod';
 // const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/;
 const UserSchema = z.object({
   name: mongoSafeString,
-  email: z.string().email(),
+  email: z.email(),
   password: mongoSafeString,
   role: z.enum(['admin', 'user', 'affected', 'volunteer']),
   profileImage: mongoSafeString.optional(),
