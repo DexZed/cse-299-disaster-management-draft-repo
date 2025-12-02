@@ -9,17 +9,9 @@ import { Connection } from 'mongoose';
 import { ResourcesModule } from './resources/resources.module';
 import { ChatModule } from './chat/chat.module';
 import { LocationModule } from './location/location.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'public'),
-      serveStaticOptions: {
-        fallthrough:false,
-      },
-    }),
     ConfigModule.forRoot({
       isGlobal: true,
       validate:validateEnv
