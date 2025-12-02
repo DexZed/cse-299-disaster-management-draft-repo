@@ -8,12 +8,13 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Linking } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchVolunteer, selectVolunteer } from '../store/slices/volunteerSlice';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 // We'll try to dynamically require react-native-maps to avoid crashing if not installed
 let MapView: any = null;
@@ -53,6 +54,10 @@ export default function ReportTrackingScreen() {
    */
   const dispatch = useAppDispatch();
   const volunteerData = useAppSelector(selectVolunteer);
+
+  const insets = useSafeAreaInsets();
+  const safeTop = (insets && insets.top) ? Math.max(0, insets.top -35) : 0;
+  const safeBottom = (insets && insets.bottom) ? insets.bottom : 0;
 
   // Read victim coords from query params when provided, fallback to Dhaka
   const victimLat = parseFloat((params.latitude as string) || '23.8103');
@@ -172,7 +177,8 @@ export default function ReportTrackingScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { paddingTop: safeTop, paddingBottom: safeBottom }]} edges={["top","bottom"]}>
+      <StatusBar style="light" backgroundColor="#000" />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <MaterialCommunityIcons name="chevron-left" size={24} color="#fff" />
@@ -318,15 +324,15 @@ export default function ReportTrackingScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f7fb' },
-  header: { backgroundColor: '#d32f2f', padding: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  header: { backgroundColor: '#d32f2f', paddingHorizontal: 12, paddingVertical: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   backButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
   headerTitle: { alignItems: 'center' },
   headerText: { color: '#fff', fontWeight: '700', fontSize: 16 },
   headerSub: { color: '#fff', fontSize: 12, marginTop: 4 },
-  topSection: { paddingHorizontal: 16, paddingVertical: 12 },
+  topSection: { paddingHorizontal: 14, paddingVertical: 8 },
   scrollableContent: { flex: 1 },
   scrollableContentContainer: { paddingHorizontal: 16, paddingVertical: 12, paddingBottom: 16 },
-  statusBox: { backgroundColor: '#e3f2fd', borderLeftWidth: 4, borderLeftColor: '#0099ff', padding: 12, borderRadius: 8, marginBottom: 12 },
+  statusBox: { backgroundColor: '#e3f2fd', borderLeftWidth: 4, borderLeftColor: '#0099ff', padding: 10, borderRadius: 8, marginBottom: 10 },
   statusTitle: { color: '#0099ff', fontWeight: '700', fontSize: 16 },
   statusSub: { color: '#0099ff', marginTop: 4 },
   detailsCard: { backgroundColor: '#fff', padding: 12, borderRadius: 8, marginTop: 12, marginBottom: 12 },
@@ -335,24 +341,24 @@ const styles = StyleSheet.create({
   cardText: { marginLeft: 8 },
   smallText: { marginLeft: 8, color: '#666', fontSize: 13 },
   sectionTitle: { marginTop: 6, marginBottom: 8, fontWeight: '700' },
-  mapContainer: { height: 220, borderRadius: 8, overflow: 'hidden', marginBottom: 12, position: 'relative' },
+  mapContainer: { height: 220, borderRadius: 8, overflow: 'hidden', marginBottom: 10, position: 'relative' },
   map: { flex: 1 },
   mapFallback: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 12 },
   expandMapButton: { position: 'absolute', top: 8, right: 8, backgroundColor: 'rgba(0, 0, 0, 0.4)', width: 40, height: 40, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
   mainScroll: { flex: 1 },
-  mainScrollContent: { paddingHorizontal: 16, paddingVertical: 12, paddingBottom: 16 },
-  volunteerCard: { backgroundColor: '#fff', padding: 12, borderRadius: 8, marginBottom: 12 },
+  mainScrollContent: { paddingHorizontal: 14, paddingVertical: 8, paddingBottom: 12 },
+  volunteerCard: { backgroundColor: '#fff', padding: 10, borderRadius: 8, marginBottom: 10 },
   volunteerHeader: { flexDirection: 'row', alignItems: 'center' },
   avatarPlaceholder: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#1b5e20', justifyContent: 'center', alignItems: 'center' },
   volName: { fontWeight: '700', color: '#fff', backgroundColor: '#1b5e20', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
   volLabel: { color: '#666', marginTop: 4 },
-  volMetricsRow: { flexDirection: 'row', marginTop: 12 },
+  volMetricsRow: { flexDirection: 'row', marginTop: 8 },
   metricBox: { flex: 1, backgroundColor: '#f5fbf7', padding: 10, borderRadius: 8, marginRight: 8 },
   metricTitle: { color: '#666', fontSize: 12 },
   metricValue: { color: '#2e7d32', fontWeight: '700', marginTop: 6 },
-  infoRow: { flexDirection: 'row', alignItems: 'center', marginTop: 12 },
+  infoRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
   infoText: { marginLeft: 8, color: '#666' },
-  actionsRow: { flexDirection: 'row', marginTop: 12 },
+  actionsRow: { flexDirection: 'row', marginTop: 8 },
   callButton: { flex: 1, backgroundColor: '#2e7d32', padding: 12, borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8 },
   messageButton: { flex: 1, backgroundColor: '#1976d2', padding: 12, borderRadius: 8, marginLeft: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8 },
   callText: { color: '#fff', marginLeft: 8 },
