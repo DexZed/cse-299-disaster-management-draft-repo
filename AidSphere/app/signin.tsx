@@ -66,7 +66,7 @@ export default function SignInScreen() {
       const userData = {
         id: `user-${role}-${Date.now()}`,
         email: email.trim() || `${role}@example.com`,
-        role,
+        role: role as 'volunteer' | 'victim',
       };
 
       dispatch(setUser(userData));
