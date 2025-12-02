@@ -11,6 +11,7 @@ import { ChatModule } from './chat/chat.module';
 import { LocationModule } from './location/location.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { join } from 'path';
     ResourcesModule,
     ChatModule,
     LocationModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

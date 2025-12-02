@@ -11,6 +11,7 @@
  * read `items`, `currentReport`, and `status` to drive UI feedback.
  */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { apiFetch } from '../../constants/backend';
 
 export interface ReportItem {
   id?: string;
@@ -43,7 +44,7 @@ export const submitReport = createAsyncThunk(
   'report/submitReport',
   async (reportData: FormData) => {
     try {
-      const resp = await fetch('/api/reports/create', {
+      const resp = await apiFetch('/reports/create', {
         method: 'POST',
         body: reportData,
       });
@@ -69,7 +70,7 @@ export const submitReport = createAsyncThunk(
 
 export const fetchReports = createAsyncThunk('report/fetchReports', async () => {
   try {
-    const resp = await fetch('/api/reports');
+    const resp = await apiFetch('/reports');
     if (!resp.ok) throw new Error('Network response not ok');
     return (await resp.json()) as ReportItem[];
   } catch (err) {

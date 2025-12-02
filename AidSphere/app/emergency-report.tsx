@@ -15,15 +15,20 @@ import {
   PanResponder,
   Dimensions,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useRouter } from 'expo-router';
+import { apiFetch } from '../constants/backend';
 
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EmergencyReportScreen() {
+  const insets = useSafeAreaInsets();
+  const safeTop = 0;
+  const safeBottom = (insets && insets.bottom) ? insets.bottom : 0;
   /**
    * EmergencyReportScreen
    * ----------------------
@@ -198,12 +203,11 @@ export default function EmergencyReportScreen() {
         } as any);
       });
 
-      // Send to backend
-      const response = await fetch('/api/reports/create', {
+      // Send to backend using centralized helper
+      const response = await apiFetch('/reports/create', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        // NOTE: Do not set Content-Type for multipart/form-data here —
+        // letting fetch set the correct boundary is more reliable.
         body: formData,
       });
 
@@ -276,7 +280,8 @@ export default function EmergencyReportScreen() {
   ).current;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { paddingTop: safeTop, paddingBottom: safeBottom }]} edges={["top","bottom"]}>
+      <StatusBar style="light" backgroundColor="#000000" />
             {/* Floating Chatbot Button (draggable) */}
             <Animated.View
               style={[styles.floatingChatbotButton, { transform: pan.getTranslateTransform() }]}
@@ -642,12 +647,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   scrollContent: {
-    paddingBottom: 24,
+    paddingBottom: 12,
   },
   header: {
     backgroundColor: '#0099ff',
     paddingHorizontal: 16,
-    paddingVertical: 20,
+    paddingVertical: 8,
     alignItems: 'center',
   },
   headerTitle: {
@@ -683,9 +688,9 @@ const styles = StyleSheet.create({
   section: {
     backgroundColor: '#fff',
     marginHorizontal: 16,
-    marginTop: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    marginTop: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     borderRadius: 8,
   },
   sectionHeader: {
@@ -705,7 +710,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   mapOverlay: {
     flex: 1,
@@ -836,8 +841,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#0099ff',
     marginHorizontal: 16,
-    marginTop: 16,
-    paddingVertical: 14,
+    marginTop: 12,
+    paddingVertical: 12,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
