@@ -165,16 +165,16 @@ REMOVED
 ##### Example Response: GET /users
 
 ```json
-{
-  "data": [
+ [
     {
       "_id": "65ab12f8a9",
       "name": "John Doe",
       "email": "john@mail.com",
-      "role": "volunteer"
+      "role": "volunteer",
+      "__v": 0
     }
   ]
-}
+
 ```
 
 
@@ -276,8 +276,7 @@ expiryDate?: Date
 ##### Example  Response: GET /resources all
 
 ```json
-{
-  "data": [
+ [
     {
         "_id":"655f4a7b9e7c8d1f2a3b4c5d"
       "name": "Food",
@@ -300,7 +299,7 @@ expiryDate?: Date
       "expiryDate":"YYYY-mm-ddTHH:MM:ss.sss"
     }
   ]
-}
+
 ```
 ### 📦 Map MODULE
 
