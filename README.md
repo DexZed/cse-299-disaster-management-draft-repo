@@ -78,7 +78,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  POST https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/users
+  POST https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users
 ```
 
 | Parameter | Type     | Description                |
@@ -93,7 +93,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/users
+  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users
 ```
 
 | Parameter | Type     | Description                       |
@@ -107,7 +107,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/users/:id
+  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -122,7 +122,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  PATCH https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/users/:id
+  PATCH https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -136,7 +136,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  Delete https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/users/:id
+  Delete https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -187,7 +187,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  POST https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/resources
+  POST https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources
 ```
 
 | Parameter | Type     | Description                |
@@ -201,7 +201,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/resources
+  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources
 ```
 
 | Parameter | Type     | Description                       |
@@ -215,7 +215,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/resources/:id
+  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -230,7 +230,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  PATCH https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/resources/:id
+  PATCH https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -244,7 +244,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  Delete https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/resources/:id
+  Delete https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -315,7 +315,7 @@ The ***POST,GET*** are REST endpoints and the actual response is a websoket resp
 ```
 ***Hosted:***
 ```http
-  POST https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/location/update
+  POST https://cse-299-disaster-management-draft-r.vercel.app/api/v1/location/update
 ```
 
 | Parameter | Type     | Description                |
@@ -329,7 +329,7 @@ The ***POST,GET*** are REST endpoints and the actual response is a websoket resp
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/location/volunteers
+  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/location/volunteers
 ```
 
 | Parameter | Type     | Description                       |
@@ -343,7 +343,7 @@ The ***POST,GET*** are REST endpoints and the actual response is a websoket resp
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/location/affected
+  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/location/affected
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
@@ -357,7 +357,7 @@ The ***POST,GET*** are REST endpoints and the actual response is a websoket resp
 ```
 ***Hosted:***
 ```http
-  PATCH https://cse-299-disaster-management-draft-r.vercel.app/ap1/v1/location/all
+  PATCH https://cse-299-disaster-management-draft-r.vercel.app/api/v1/location/all
 ```
 
 | Parameter | Type     | Description                       |
