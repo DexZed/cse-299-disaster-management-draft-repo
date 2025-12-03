@@ -21,9 +21,12 @@ export class Resources {
 
   @Prop({ required: true, enum: Status, default: Status.available })
   status: string;
+  @Prop({ required: true })
+  
+  latitude: number;
 
   @Prop({ required: true })
-  location: string;
+  longitude: number;
 
   @Prop()
   expiryDate: Date;
