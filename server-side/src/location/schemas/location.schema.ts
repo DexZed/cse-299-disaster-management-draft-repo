@@ -3,10 +3,36 @@ import { Document, Types } from 'mongoose';
 
 export type LocationDocument = Location & Document;
 
+
+
+export enum HelpType {
+  FOOD = 'food',
+  SHELTER = 'shelter',
+  MEDICAL_KIT = 'medical_kit',
+}
+
+export enum Priority {
+  CRITICAL = 'critical',
+  HIGH = 'high',
+  MEDIUM = 'medium',
+  LOW = 'low',
+}
 @Schema({ timestamps: { createdAt: false, updatedAt: 'updated_at' } })
 export class Location {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user_id: Types.ObjectId;
+
+  @Prop({required: true})
+  description?: string;
+
+  @Prop({required: true})
+  helpType: HelpType;
+
+  @Prop({required: true})
+  priority: Priority;
+
+  @Prop()
+  image?: string;
 
   @Prop({ required: true })
   latitude: number;
@@ -18,7 +44,7 @@ export class Location {
   accuracy?: number;
 
   @Prop({ default: Date.now })
-  updated_at: Date;
+  updated_at?: Date;
 }
 
 export const LocationSchema = SchemaFactory.createForClass(Location);

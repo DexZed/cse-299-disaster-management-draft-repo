@@ -1,46 +1,27 @@
-import { Body, Controller, Get, Post, HttpException, HttpStatus } from '@nestjs/common';
-import { UpdateLocationDto } from './dto/update-location.dto';
-import { LocationGateway } from '../gateway/location.gateway';
+import { Controller, Post, Body, Get, Query } from '@nestjs/common';
 import { LocationService } from './location.service';
+import UpdateLocationDto from './dto/update-location.dto';
 
 @Controller('location')
 export class LocationController {
-  constructor(
-    private readonly locationService: LocationService,
-    private readonly gateway: LocationGateway,
-  ) {}
+  constructor(private readonly locationService: LocationService) {}
 
+  // Affected user updates location
   @Post('update')
-  async update(@Body() body: any) {
-    try {
-      const updated = await this.locationService.updateLocation(body);
-      // Broadcast to WebSocket clients (frontend map listeners)
-      this.gateway.broadcastLocation({
-        user_id: updated.user_id._id ?? updated.user_id,
-        name: updated.user_id?.name ?? null,
-        role: updated.user_id?.role ?? null,
-        latitude: updated.latitude,
-        longitude: updated.longitude,
-        updated_at: updated.updated_at,
-      });
-      return { message: 'Location updated', location: updated };
-    } catch (err) {
-      throw new HttpException(err.message || 'Error', HttpStatus.BAD_REQUEST);
-    }
+  async updateLocation(@Body() dto: UpdateLocationDto) {
+    return this.locationService.updateLocation(dto);
   }
+  
 
-  @Get('volunteers')
-  getVolunteers() {
-    return this.locationService.getVolunteers();
-  }
-
+  // Get all affected people (admin + volunteer view)
   @Get('affected')
-  getAffected() {
-    return this.locationService.getAffected();
+  async getAffected() {
+    return this.locationService.getAffectedPeople();
   }
 
-  @Get('all')
-  getAll() {
-    return this.locationService.getAllLocations();
+  // Get a specific user location
+  @Get('user')
+  async getUserLocation(@Query('user_id') user_id: string) {
+    return this.locationService.getLocationById(user_id);
   }
 }
