@@ -14,7 +14,7 @@ All routes are prefixed with:
 When hosted on Vercel:
 
 ```bash
-https://cse-299-disaster-management-draft-r.vercel.app/api/v1
+https://cse-299-disaster-management-draft-repo.onrender.com/api/v1
 
 ```
 
@@ -78,7 +78,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  POST https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users
+  POST https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/users
 ```
 
 | Parameter | Type     | Description                |
@@ -93,7 +93,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users
+  GET https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/users
 ```
 
 | Parameter | Type     | Description                       |
@@ -107,7 +107,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users/:id
+  GET https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/users/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -122,7 +122,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  PATCH https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users/:id
+  PATCH https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/users/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -136,7 +136,7 @@ From **main.ts**:
 ```
 ***Hosted:***
 ```http
-  Delete https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users/:id
+  Delete https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/users/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -187,7 +187,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  POST https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources
+  POST https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/resources
 ```
 
 | Parameter | Type     | Description                |
@@ -201,7 +201,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources
+  GET https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/resources
 ```
 
 | Parameter | Type     | Description                       |
@@ -215,7 +215,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources/:id
+  GET https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/resources/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -230,7 +230,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  PATCH https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources/:id
+  PATCH https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/resources/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -244,7 +244,7 @@ REMOVED
 ```
 ***Hosted:***
 ```http
-  Delete https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources/:id
+  Delete https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/resources/:id
 ```
 
 | Parameter | Type     | Description                       |
@@ -314,7 +314,7 @@ The ***POST,GET*** are REST endpoints and the actual response is a websoket resp
 ```
 ***Hosted:***
 ```http
-  POST https://cse-299-disaster-management-draft-r.vercel.app/api/v1/location/update
+  POST https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/location/update
 ```
 
 | Parameter | Type     | Description                |
@@ -328,7 +328,7 @@ The ***POST,GET*** are REST endpoints and the actual response is a websoket resp
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/location/volunteers
+  GET https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/location/volunteers
 ```
 
 | Parameter | Type     | Description                       |
@@ -342,7 +342,7 @@ The ***POST,GET*** are REST endpoints and the actual response is a websoket resp
 ```
 ***Hosted:***
 ```http
-  GET https://cse-299-disaster-management-draft-r.vercel.app/api/v1/location/affected
+  GET https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/location/affected
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
@@ -356,7 +356,7 @@ The ***POST,GET*** are REST endpoints and the actual response is a websoket resp
 ```
 ***Hosted:***
 ```http
-  PATCH https://cse-299-disaster-management-draft-r.vercel.app/api/v1/location/all
+  PATCH https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/location/all
 ```
 
 | Parameter | Type     | Description                       |
@@ -419,7 +419,7 @@ updatedAt?: Date
 #### ⚡ WebSocket — AI Streaming
 NameSpace
 ```http
-  https://cse-299-disaster-management-draft-r.vercel.app/chat
+  https://cse-299-disaster-management-draft-repo.onrender.com/chat
 ```
 Socket URL when hosted:
 ```http
@@ -484,7 +484,7 @@ export const API_URL = "http://10.0.2.2:3000/api/v1";
 
 Hosted:
 ```typecript
-export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1"
+export const API_URL = "https://cse-299-disaster-management-draft-repo.onrender.com/api/v1"
 ```
 
 ## 📡 REST API Calls (Expo Example)
@@ -492,7 +492,7 @@ export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/a
 ### 1. Generic API Client
 #### src/core/api.ts
 ```typescript
-export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1";
+export const API_URL = "https://cse-299-disaster-management-draft-repo.onrender.com/api/v1";
 
 export async function api(path, options = {}) {
   const res = await fetch(`${API_URL}${path}`, {
@@ -509,7 +509,7 @@ export async function api(path, options = {}) {
 
 Hosted:
 ```ts
-export const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1"
+export const API_URL = "https://cse-299-disaster-management-draft-repo.onrender.com/api/v1"
 ```
 
 ### 👤 Example — Create User
@@ -559,7 +559,7 @@ npm install socket.io-client
 ```ts
 import { io } from "socket.io-client";
 
-const socket = io("https://cse-299-disaster-management-draft-r.vercel.app/chat", {
+const socket = io("https://cse-299-disaster-management-draft-repo.onrender.com/chat", {
   transports: ["websocket"],
 });
 
@@ -681,7 +681,7 @@ export function useChatLLM() {
   // INIT SOCKET ONCE
   useEffect(() => {
     const socket = io(
-      "https://cse-299-disaster-management-draft-r.vercel.app/chat",
+      "https://cse-299-disaster-management-draft-repo.onrender.com/chat",
       { transports: ["websocket"] }
     );
 
@@ -820,13 +820,13 @@ When deploying to Vercel:
 
 - Your server URL will be something like:
 ```http
-https://cse-299-disaster-management-draft-r.vercel.app
+https://cse-299-disaster-management-draft-repo.onrender.com
 ```
 
 - REST endpoints automatically become:
 ```http
-https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users
-https://cse-299-disaster-management-draft-r.vercel.app/api/v1/resources
+https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/users
+https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/resources
 
 ```
 
