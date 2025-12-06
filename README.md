@@ -391,8 +391,7 @@ updatedAt?: Date
 ##### Example  Response: websocket  /location (array) 
 
 ```json
-{
-  "data": [
+ [
   "user_id": "656911f97b4a2e8c2d1b73c4",
   "description": "Family of four needs emergency food and water near the old clock tower.",
   "helpType": "food",
@@ -412,7 +411,7 @@ updatedAt?: Date
   "updatedAt": "2025-12-02T16:48:57.000Z"
 }
   ]
-}
+
 ```
 
 ### 🤖 CHAT MODULE (WebSockets)
