@@ -1,19 +1,16 @@
 import { createZodDto } from 'nestjs-zod';
-
+import { mongoSafeString } from '../../resources/dto/create-resource.dto';
 import { z } from 'zod';
-const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/;
+// const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/;
 const UserSchema = z.object({
-  name: z.string(),
+  name: mongoSafeString,
   email: z.email(),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters long')
-    .regex(
-      passwordRegex,
-      'Password must contain at least one uppercase letter, one number, and one special character'
-    ),
-  role: z.enum(['admin', 'user', 'affected', 'volunteer']),
-});
+  password: mongoSafeString,
+  role: z.enum(['admin', 'user', 'affected', 'volunteer','victim']),
+  profileImage: mongoSafeString.optional(),
+  isAuthenticated: z.boolean().optional(),
+  rememberMe: z.boolean().optional(),
+}).strict();
 
 
 export class CreateUserDto extends createZodDto(UserSchema){}
