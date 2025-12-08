@@ -251,7 +251,7 @@ export default function ReportTrackingScreen() {
                 </MapView>
 
                 {/* expand button in top-right */}
-                <TouchableOpacity style={styles.expandMapButton} onPress={() => router.push(`/volunteer-tracking-map?victimLat=${victimLat}&victimLon=${victimLon}`)} activeOpacity={0.8}>
+                <TouchableOpacity style={styles.expandMapButton} onPress={() => router.push({ pathname: 'volunteer-tracking-map', params: { victimLat, victimLon } as any } as any)} activeOpacity={0.8}>
                   <MaterialCommunityIcons name="fullscreen" size={20} color="#fff" />
                 </TouchableOpacity>
               </>

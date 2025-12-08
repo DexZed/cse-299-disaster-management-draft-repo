@@ -7,20 +7,7 @@ export default function WelcomeScreen() {
 	const router = useRouter();
 
 	const handleGetStarted = () => {
-		try {
-			router.push('/signin');
-		} catch (err) {
-			// fallback: try without leading slash
-			console.warn('router.push(/signin) failed, trying fallback', err);
-			try {
-				router.push('/signin');
-			} catch (err2) {
-				console.error('Fallback navigation to signin failed', err2);
-				// show an alert to the user so they know something went wrong
-				// eslint-disable-next-line no-alert
-				alert('Navigation failed. Please try again.');
-			}
-		}
+		router.push('signin' as any);
 	};
 
 	return (
@@ -36,11 +23,9 @@ export default function WelcomeScreen() {
 					<Text style={styles.tagline}>Connect.Respond.Rebuild.</Text>
 				</View>
 
-				<Link href="/signin" asChild>
-					<TouchableOpacity style={styles.button} activeOpacity={0.85}>
-						<Text style={styles.buttonText}>Get Started</Text>
-					</TouchableOpacity>
-				</Link>
+				<TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={handleGetStarted}>
+					<Text style={styles.buttonText}>Get Started</Text>
+				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);
