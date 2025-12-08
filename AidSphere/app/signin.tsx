@@ -71,7 +71,7 @@ export default function SignInScreen() {
         role: role,
 
       };
-        console.log("Sign-in payload:", payload); // Debugging log
+        console.log("Sign-in payload:", { ...payload, password: "<REDACTED>" }); // Debugging log
       const response = await fetch(`${API_BASE_URL}/users`, {
         method: "POST",
         headers: {
