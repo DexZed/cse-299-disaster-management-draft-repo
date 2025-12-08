@@ -5,7 +5,7 @@ import { ChatMessageDto } from './dto/create-chat.dto';
 
 @Injectable()
 export class ChatService {
-  // TODO : ADD Ai chat here 
+ 
   constructor(private readonly googleGenAI: GoogleGenAI){}
   handlerMessage(message:any){
     console.log(message)

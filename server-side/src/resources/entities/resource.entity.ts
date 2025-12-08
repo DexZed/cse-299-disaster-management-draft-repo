@@ -8,7 +8,7 @@ export enum Status {
   outOfStock = 'Out of Stock',
   available = 'Available',
 }
-@Schema({ timestamps: true, versionKey: false })
+@Schema({ timestamps: true, versionKey: false, strict: true })
 @Schema()
 export class Resources {
   @Prop({ required: true })
@@ -21,9 +21,12 @@ export class Resources {
 
   @Prop({ required: true, enum: Status, default: Status.available })
   status: string;
+  @Prop({ required: true })
+  
+  latitude: number;
 
   @Prop({ required: true })
-  location: string;
+  longitude: number;
 
   @Prop()
   expiryDate: Date;
