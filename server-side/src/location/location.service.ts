@@ -30,6 +30,6 @@ export class LocationService {
 
   // Get a single location by user_id
   async getLocationById(user_id: string) {
-    return this.locationModel.findOne({ user_id });
+    return this.locationModel.findOne({ user_id: { $eq: user_id } });
   }
 }
