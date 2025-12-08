@@ -14,6 +14,7 @@ import requestsReducer from './slices/requestsSlice';
 import incidentsReducer from './slices/incidentsSlice';
 import volunteerReducer from './slices/volunteerSlice';
 import reportReducer from './slices/reportSlice';
+import chatReducer from './slices/chatSlice';
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     incidents: incidentsReducer,
     volunteer: volunteerReducer,
     report: reportReducer,
+    chat: chatReducer,
   },
 });
 

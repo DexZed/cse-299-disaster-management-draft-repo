@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import * as Location from 'expo-location';
 
 // dynamic require for react-native-maps
 let MapView: any = null;
@@ -27,6 +28,30 @@ export default function FullMapPage() {
   const insets = useSafeAreaInsets();
   const safeTop = -32;
   const safeBottom = insets && typeof insets.bottom === 'number' ? insets.bottom : 0;
+  const [volunteerLocation, setVolunteerLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  useEffect(() => {
+    fetchVolunteerLocation();
+  }, []);
+
+  const fetchVolunteerLocation = async () => {
+    try {
+      const { status } = await (Location.requestForegroundPermissionsAsync as any)();
+      if (status !== 'granted') {
+        console.warn('Location permission denied');
+        return;
+      }
+      const location = await (Location.getCurrentPositionAsync as any)({
+        accuracy: (Location.Accuracy as any).Balanced,
+      });
+      setVolunteerLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    } catch (err) {
+      console.error('Failed to fetch volunteer location:', err);
+    }
+  };
 
   return (
     <SafeAreaView style={[styles.container, { paddingTop: safeTop, paddingBottom: safeBottom }]} edges={["top","bottom"]}>
@@ -43,6 +68,14 @@ export default function FullMapPage() {
             style={styles.map}
             initialRegion={{ latitude: 23.8103, longitude: 90.4125, latitudeDelta: 0.12, longitudeDelta: 0.12 }}
           >
+            {/* Volunteer's own location marker (blue) */}
+            {volunteerLocation && Marker && (
+              <Marker
+                coordinate={{ latitude: volunteerLocation.latitude, longitude: volunteerLocation.longitude }}
+                pinColor="#2196f3"
+                title="Your Location"
+              />
+            )}
             {incidents.map((it) => (
               Marker && (
                 <Marker
@@ -59,6 +92,7 @@ export default function FullMapPage() {
         {/* Legend overlay on full map */}
         <View style={styles.legendBox} pointerEvents="none">
           <Text style={styles.legendTitle}>Map Legend</Text>
+          <View style={styles.legendRow}><View style={[styles.legendDot, { backgroundColor: '#2196f3' }]} /><Text style={styles.legendLabel}>Your Location</Text></View>
           <View style={styles.legendRow}><View style={[styles.legendDot, { backgroundColor: '#e53935' }]} /><Text style={styles.legendLabel}>Critical</Text></View>
           <View style={styles.legendRow}><View style={[styles.legendDot, { backgroundColor: '#fb8c00' }]} /><Text style={styles.legendLabel}>High</Text></View>
           <View style={styles.legendRow}><View style={[styles.legendDot, { backgroundColor: '#ffd54f' }]} /><Text style={styles.legendLabel}>Medium</Text></View>

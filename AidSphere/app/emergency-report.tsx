@@ -20,10 +20,28 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useRouter } from 'expo-router';
-import { apiFetch } from '../constants/backend';
+import VictimDrawer from '@/components/VictimDrawer';
 
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
+
+const apiFetch = async (url: string, options: RequestInit) => {
+  const baseUrl = 'https://cse-299-disaster-management-draft-r.vercel.app/api/v1';
+
+  try {
+    const response = await fetch(baseUrl + url, {
+      ...options,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...options.headers,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Error connecting to the backend', error);
+    throw error;
+  }
+};
 
 export default function EmergencyReportScreen() {
   const insets = useSafeAreaInsets();
@@ -45,17 +63,20 @@ export default function EmergencyReportScreen() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
+  // Drawer state
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   // Form state
   const [location, setLocation] = useState<{ latitude: number; longitude: number; address: string } | null>(null);
   const [description, setDescription] = useState('');
   const [helpType, setHelpType] = useState('');
+  const [amount, setAmount] = useState('');
   const [priority, setPriority] = useState('');
-  const [media, setMedia] = useState<string[]>([]);
   const [helpTypeMenuOpen, setHelpTypeMenuOpen] = useState(false);
   const [priorityMenuOpen, setPriorityMenuOpen] = useState(false);
-
+  const[selector]=useState(useAppSelector((state)=>state));
+  
   const helpTypeOptions = [
-    { label: 'Select help type', value: '' },
     { label: 'Food', value: 'Food' },
     { label: 'Shelter', value: 'Shelter' },
     { label: 'Medical Kit', value: 'Medical Kit' },
@@ -125,33 +146,11 @@ export default function EmergencyReportScreen() {
       return { latitude, longitude };
     } catch (err) {
       setError('Failed to fetch location. Please enable location services.');
-      console.error(err);
+     console.error('Location error:', err);
       return null;
     } finally {
       setLoadingLocation(false);
     }
-  };
-
-  const pickMedia = async () => {
-    try {
-      const result = await (ImagePicker.launchImageLibraryAsync as any)({
-        mediaTypes: (ImagePicker.MediaTypeOptions as any).All,
-        allowsEditing: false,
-        aspect: [4, 3],
-        quality: 0.7,
-      });
-
-      if (!result.canceled && result.assets && result.assets.length > 0) {
-        setMedia([...media, result.assets[0].uri]);
-      }
-    } catch (err) {
-      Alert.alert('Error', 'Failed to pick media');
-      console.error(err);
-    }
-  };
-
-  const removeMedia = (index: number) => {
-    setMedia(media.filter((_, i) => i !== index));
   };
 
   const validateForm = (): boolean => {
@@ -167,12 +166,26 @@ export default function EmergencyReportScreen() {
       setError('Please select a type of help needed');
       return false;
     }
+    if (!priority) {
+      setError('Please select a priority level');
+      return false;
+    }
+    if (helpType && !amount.trim()) {
+      setError('Please specify the amount needed');
+      return false;
+    }
+    const amountNum = parseInt(amount, 10);
+    if (isNaN(amountNum) || amountNum <= 0) {
+      setError('Please enter a valid amount (must be greater than 0)');
+      return false;
+    }
     return true;
   };
 
   const handleSubmit = async () => {
     setError('');
 
+    // Validate the form before submission
     if (!validateForm()) {
       return;
     }
@@ -180,63 +193,74 @@ export default function EmergencyReportScreen() {
     setSubmitting(true);
 
     try {
-      // Append form data
-      const formData = new FormData();
-      formData.append('userId', user?.id || '');
-      formData.append('latitude', String(location?.latitude || 0));
-      formData.append('longitude', String(location?.longitude || 0));
-      formData.append('address', location?.address || '');
-      formData.append('description', description);
-      formData.append('helpType', helpType);
-      formData.append('priority', priority);
+      // Create payload object with form data
+      const payload = {
+        userId: user?.id || '',
+        latitude: location?.latitude || 0,
+        longitude: location?.longitude || 0,
+        address: location?.address || '',
+        description: description,
+        helpType: helpType,
+        amount: amount,
+        priority: priority,
+      };
 
-      // Append media files
-      media.forEach((uri, index) => {
-        const filename = uri.split('/').pop() || `media-${index}`;
-        const extension = filename.split('.').pop() || 'jpg';
-        const mimeType = extension === 'jpg' || extension === 'jpeg' ? 'image/jpeg' : `image/${extension}`;
-
-        formData.append('media', {
-          uri,
-          name: filename,
-          type: mimeType,
-        } as any);
-      });
-
-      // Send to backend using centralized helper
-      const response = await apiFetch('/reports/create', {
+      // Call apiFetch to submit the payload as JSON
+      const response = await apiFetch('/resources', {
         method: 'POST',
-        // NOTE: Do not set Content-Type for multipart/form-data here —
-        // letting fetch set the correct boundary is more reliable.
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json', // Set content type to application/json
+        },
+        body: JSON.stringify(payload), // Stringify the payload object
       });
 
-      const data = await response.json().catch(() => ({}));
-
+      const data = await response.json();
       if (!response.ok) {
         const msg = data?.message || data?.error || 'Failed to submit report';
-        setError(String(msg));
+        setError(String(msg)); // Set the error if submission fails
         setSubmitting(false);
         return;
       }
 
-      // Success
-      Alert.alert('Success', 'Report submitted successfully! Help is on the way.', [
-        {
-          text: 'View Reports',
-          onPress: () => router.push('/(tabs)/reports'),
-        },
-        {
-          text: 'OK',
-          onPress: () => router.push('/(tabs)'),
-        },
-      ]);
-
+      // Success: Clear form and show success message
       setSubmitting(false);
+      Alert.alert(
+        'Report Submitted Successfully! ✓',
+        `Your emergency report has been submitted.\n\nHelp Type: ${helpType}\nPriority: ${priority.charAt(0).toUpperCase() + priority.slice(1)}\n\nVolunteers will reach out soon.`,
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              // Reset form
+              setDescription('');
+              setHelpType('');
+              setAmount('');
+              setPriority('');
+              setError('');
+              // Navigate back
+              router.back();
+            },
+          },
+        ]
+      );
     } catch (err) {
       setError('Failed to submit report. Please check your connection and try again.');
       setSubmitting(false);
       console.error(err);
+    }
+  };
+
+  // Helper function to get appropriate label for amount field based on help type
+  const getAmountLabel = (): string => {
+    switch (helpType) {
+      case 'Food':
+        return 'Number of people who need food';
+      case 'Medical Kit':
+        return 'Number of people who need medical kit';
+      case 'Shelter':
+        return 'Number of people who need shelter';
+      default:
+        return 'Amount needed';
     }
   };
 
@@ -282,12 +306,16 @@ export default function EmergencyReportScreen() {
   return (
     <SafeAreaView style={[styles.container, { paddingTop: safeTop, paddingBottom: safeBottom }]} edges={["top","bottom"]}>
       <StatusBar style="light" backgroundColor="#000000" />
+      
+      {/* Victim Drawer */}
+      <VictimDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      
             {/* Floating Chatbot Button (draggable) */}
             <Animated.View
               style={[styles.floatingChatbotButton, { transform: pan.getTranslateTransform() }]}
               {...panResponder.panHandlers}
             >
-              <TouchableOpacity onPress={() => router.push('/chatbot')} activeOpacity={0.8}>
+              <TouchableOpacity onPress={() => router.push('chatbot' as any)} activeOpacity={0.8}>
                 <MaterialCommunityIcons name="chat-outline" size={28} color="#fff" />
               </TouchableOpacity>
             </Animated.View>
@@ -295,8 +323,16 @@ export default function EmergencyReportScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Submit Disaster Report</Text>
-          <Text style={styles.headerSubtitle}>Help is on the way</Text>
+          <TouchableOpacity
+            style={styles.menuButton}
+            onPress={() => setDrawerOpen(true)}
+          >
+            <MaterialCommunityIcons name="menu" size={24} color="#333" />
+          </TouchableOpacity>
+          <View style={styles.headerText}>
+            <Text style={styles.headerTitle}>Submit Disaster Report</Text>
+            <Text style={styles.headerSubtitle}>Help is on the way</Text>
+          </View>
         </View>
 
         {/* Error Message */}
@@ -416,10 +452,10 @@ export default function EmergencyReportScreen() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.trackingButton, { flex: 1, marginLeft: 8 }]}
+                  style={[styles.cancelButton, { flex: 1, marginLeft: 8 }]}
                   onPress={() => setMapModalVisible(false)}
                 >
-                  <Text style={styles.trackingButtonText}>Cancel</Text>
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -505,6 +541,7 @@ export default function EmergencyReportScreen() {
                   onPress={() => {
                     setHelpType(option.value);
                     setHelpTypeMenuOpen(false);
+                    setAmount('');
                   }}
                 >
                   <Text
@@ -520,6 +557,22 @@ export default function EmergencyReportScreen() {
             </View>
           )}
         </View>
+
+        {/* Amount Field - Only show if help type is selected */}
+        {helpType && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{getAmountLabel()}</Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Enter amount"
+              placeholderTextColor="#aaa"
+              keyboardType="number-pad"
+              value={amount}
+              onChangeText={setAmount}
+              editable={!submitting}
+            />
+          </View>
+        )}
 
         {/* Priority Section */}
         <View style={styles.section}>
@@ -567,36 +620,6 @@ export default function EmergencyReportScreen() {
           )}
         </View>
 
-        {/* Media Upload Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Upload Photos/Videos</Text>
-          <TouchableOpacity
-            style={styles.uploadBox}
-            onPress={pickMedia}
-            disabled={submitting}
-          >
-            <MaterialCommunityIcons name="cloud-upload-outline" size={32} color="#999" />
-            <Text style={styles.uploadText}>Tap to upload images or videos</Text>
-          </TouchableOpacity>
-
-          {/* Media Preview */}
-          {media.length > 0 && (
-            <View style={styles.mediaPreview}>
-              {media.map((uri, index) => (
-                <View key={index} style={styles.mediaItem}>
-                  <Image source={{ uri }} style={styles.mediaImage} />
-                  <TouchableOpacity
-                    style={styles.removeMediaBtn}
-                    onPress={() => removeMedia(index)}
-                  >
-                    <MaterialCommunityIcons name="close" size={16} color="#fff" />
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
-          )}
-        </View>
-
         {/* Info Box */}
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>Submit report to request help</Text>
@@ -618,24 +641,6 @@ export default function EmergencyReportScreen() {
             </>
           )}
         </TouchableOpacity>
-
-        {/* View Reports Button */}
-        <TouchableOpacity
-          style={styles.trackingButton}
-          onPress={() => {
-            if (!location) {
-              setError('Please enable location or pick a location before previewing tracking.');
-              return;
-            }
-            // pass current report coords to tracking page
-            const lat = String(location.latitude);
-            const lon = String(location.longitude);
-            router.push(`/report-tracking?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}`);
-          }}
-          disabled={submitting}
-        >
-          <Text style={styles.trackingButtonText}>Preview Tracking Page</Text>
-        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -651,20 +656,28 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#0099ff',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    flexDirection: 'row',
     alignItems: 'center',
   },
+  menuButton: {
+    padding: 8,
+    marginRight: 12,
+  },
+  headerText: {
+    flex: 1,
+  },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '700',
     color: '#fff',
-    marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#fff',
     opacity: 0.9,
+    marginTop: 2,
   },
   errorBox: {
     flexDirection: 'row',
@@ -772,50 +785,6 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
   },
-  uploadBox: {
-    borderWidth: 2,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fafafa',
-  },
-  uploadText: {
-    fontSize: 14,
-    color: '#999',
-    marginTop: 8,
-    fontWeight: '500',
-  },
-  mediaPreview: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 12,
-    gap: 8,
-  },
-  mediaItem: {
-    position: 'relative',
-    width: '30%',
-    aspectRatio: 1,
-    borderRadius: 6,
-    overflow: 'hidden',
-  },
-  mediaImage: {
-    width: '100%',
-    height: '100%',
-  },
-  removeMediaBtn: {
-    position: 'absolute',
-    top: 4,
-    right: 4,
-    backgroundColor: '#0099ff',
-    borderRadius: 12,
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   infoBox: {
     backgroundColor: '#fffde7',
     borderLeftWidth: 4,
@@ -857,21 +826,30 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#fff',
   },
-  trackingButton: {
+  cancelButton: {
     backgroundColor: '#424242',
-    marginHorizontal: 16,
-    marginTop: 8,
     paddingVertical: 14,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  trackingButtonText: {
+  cancelButtonText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#fff',
   },
   dropdownButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    backgroundColor: '#fff',
+  },
+  disabledOverlay: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

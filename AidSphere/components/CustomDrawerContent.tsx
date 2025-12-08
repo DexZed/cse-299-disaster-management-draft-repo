@@ -41,7 +41,7 @@ export default function CustomDrawerContent(props: any) {
           )}
           onPress={() => {
             navigation.closeDrawer();
-            router.push('/(tabs)');
+            router.push('(tabs)' as any);
           }}
         />
         <DrawerItem
@@ -52,7 +52,7 @@ export default function CustomDrawerContent(props: any) {
           )}
           onPress={() => {
             navigation.closeDrawer();
-            router.push('/(tabs)/reports');
+            router.push('(tabs)/reports' as any);
           }}
         />
         <DrawerItem
@@ -63,7 +63,7 @@ export default function CustomDrawerContent(props: any) {
           )}
           onPress={() => {
             navigation.closeDrawer();
-            router.push('/(tabs)/profile');
+            router.push('(tabs)/profile' as any);
           }}
         />
       </View>
@@ -77,7 +77,7 @@ export default function CustomDrawerContent(props: any) {
           onPress={() => {
             navigation.closeDrawer();
             dispatch(signOut());
-            router.push('/welcome');
+            router.push('welcome' as any);
           }}
         />
       </View>
