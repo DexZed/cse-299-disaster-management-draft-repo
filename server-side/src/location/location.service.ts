@@ -13,12 +13,18 @@ export class LocationService {
 
   // Create or update location
   async updateLocation(dto: UpdateLocationDto) {
+    // Whitelist only the desired fields to be updated.
+    const allowedFields = ['latitude', 'longitude', 'status', 'otherField'];
+    const update: Partial<Location> = {};
+    for (const key of allowedFields) {
+      if (key in dto) {
+        update[key] = dto[key];
+      }
+    }
+    update.updated_at = new Date();
     return this.locationModel.findOneAndUpdate(
       { user_id: dto.user_id },
-      { 
-        ...dto,
-        updated_at: new Date(),
-      },
+      update,
       { upsert: true, new: true }
     );
   }
