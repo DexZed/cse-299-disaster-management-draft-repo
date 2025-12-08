@@ -3,8 +3,6 @@ import { Document, Types } from 'mongoose';
 
 export type LocationDocument = Location & Document;
 
-
-
 export enum HelpType {
   FOOD = 'food',
   SHELTER = 'shelter',
@@ -17,28 +15,31 @@ export enum Priority {
   MEDIUM = 'medium',
   LOW = 'low',
 }
-@Schema({ timestamps: { createdAt: false, updatedAt: 'updated_at' } })
+
+@Schema({
+  timestamps: { createdAt: false, updatedAt: 'updated_at' }
+})
 export class Location {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user_id: Types.ObjectId;
 
-  @Prop({required: true})
+  @Prop()
   description?: string;
 
-  @Prop({required: true})
-  helpType: HelpType;
+  @Prop({ enum: HelpType })
+  helpType?: HelpType;
 
-  @Prop({required: true})
-  priority: Priority;
+  @Prop({ enum: Priority })
+  priority?: Priority;
 
   @Prop()
   image?: string;
 
-  @Prop({ required: true })
-  latitude: number;
+  @Prop()
+  latitude?: number;
 
-  @Prop({ required: true })
-  longitude: number;
+  @Prop()
+  longitude?: number;
 
   @Prop()
   accuracy?: number;
@@ -48,5 +49,9 @@ export class Location {
 }
 
 export const LocationSchema = SchemaFactory.createForClass(Location);
-// Unique index on user_id; sparse allows multiple null values
+
+// Ensure each user only has one location
 LocationSchema.index({ user_id: 1 }, { unique: true, sparse: true });
+
+// For faster map queries later (future-proof)
+LocationSchema.index({ latitude: 1, longitude: 1 });
