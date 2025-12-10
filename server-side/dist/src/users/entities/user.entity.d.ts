@@ -11,6 +11,8 @@ export declare class User {
     name: string;
     email: string;
     password: string;
+    phone: string;
+    address: string;
     role: string;
     profileImage?: string;
     isAuthenticated?: boolean;

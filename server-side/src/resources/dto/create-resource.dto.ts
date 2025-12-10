@@ -7,16 +7,16 @@ export const mongoSafeString = z
   });
 
 const ResourcesSchema = z.object({
-    name: mongoSafeString,
+    name: mongoSafeString.optional(),
     description: mongoSafeString.optional(),
-    quantity: z.number(),
-    status: z.enum(['In-Use', 'Assigned', 'Out of Stock', 'Available']),
-    longitude: z.number(),
-    latitude: z.number(),
+    quantity: z.number().optional(),
+    status: z.enum(['In-Use', 'Assigned', 'Out of Stock', 'Available']).optional(),
+    longitude: z.number().optional(),
+    latitude: z.number().optional(),
     image: z.string().optional(),
     expiryDate: z.date().optional(),
 
-}).strict();
+});
 
 
 export class CreateResourceDto extends createZodDto(ResourcesSchema){}

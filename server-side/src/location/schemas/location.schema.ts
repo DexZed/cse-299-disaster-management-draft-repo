@@ -22,22 +22,22 @@ export class Location {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user_id: Types.ObjectId;
 
-  @Prop({required: true})
+  @Prop()
   description?: string;
 
-  @Prop({required: true})
+  @Prop()
   helpType: HelpType;
 
-  @Prop({required: true})
+  @Prop()
   priority: Priority;
 
   @Prop()
   image?: string;
 
-  @Prop({ required: true })
+  @Prop()
   latitude: number;
 
-  @Prop({ required: true })
+  @Prop()
   longitude: number;
 
   @Prop()

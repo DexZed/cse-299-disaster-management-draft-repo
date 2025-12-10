@@ -24,6 +24,8 @@ let User = class User {
     name;
     email;
     password;
+    phone;
+    address;
     role;
     profileImage;
     isAuthenticated;
@@ -31,20 +33,28 @@ let User = class User {
 };
 exports.User = User;
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, enum: Role, default: Role.USER }),
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], User.prototype, "phone", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], User.prototype, "address", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ enum: Role, default: Role.USER }),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
 __decorate([
@@ -60,7 +70,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], User.prototype, "rememberMe", void 0);
 exports.User = User = __decorate([
-    (0, mongoose_1.Schema)({ timestamps: true, versionKey: false, strict: true }),
+    (0, mongoose_1.Schema)({ timestamps: true, versionKey: false }),
     (0, mongoose_1.Schema)()
 ], User);
 exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
