@@ -9,15 +9,15 @@ exports.mongoSafeString = zod_1.z
     message: 'Invalid characters',
 });
 const ResourcesSchema = zod_1.z.object({
-    name: exports.mongoSafeString,
+    name: exports.mongoSafeString.optional(),
     description: exports.mongoSafeString.optional(),
-    quantity: zod_1.z.number(),
-    status: zod_1.z.enum(['In-Use', 'Assigned', 'Out of Stock', 'Available']),
-    longitude: zod_1.z.number(),
-    latitude: zod_1.z.number(),
+    quantity: zod_1.z.number().optional(),
+    status: zod_1.z.enum(['In-Use', 'Assigned', 'Out of Stock', 'Available']).optional(),
+    longitude: zod_1.z.number().optional(),
+    latitude: zod_1.z.number().optional(),
     image: zod_1.z.string().optional(),
     expiryDate: zod_1.z.date().optional(),
-}).strict();
+});
 class CreateResourceDto extends (0, nestjs_zod_1.createZodDto)(ResourcesSchema) {
 }
 exports.CreateResourceDto = CreateResourceDto;

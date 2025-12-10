@@ -42,15 +42,15 @@ __decorate([
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Location.prototype, "user_id", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Location.prototype, "description", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Location.prototype, "helpType", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Location.prototype, "priority", void 0);
 __decorate([
@@ -58,11 +58,11 @@ __decorate([
     __metadata("design:type", String)
 ], Location.prototype, "image", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", Number)
 ], Location.prototype, "latitude", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", Number)
 ], Location.prototype, "longitude", void 0);
 __decorate([

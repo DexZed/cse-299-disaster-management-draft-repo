@@ -12,20 +12,24 @@ export enum Role {
   Victim = 'victim',
 }
 
-@Schema({timestamps: true,versionKey: false,strict: true})
+@Schema({ timestamps: true, versionKey: false })
 @Schema()
 export class User {
-  @Prop({ required: true })
+  @Prop()
   name: string;
 
-  @Prop({ required: true})
+  @Prop()
   @IsEmail()
   email: string;
 
-  @Prop({ required: true,})
+  @Prop()
   password: string;
+  @Prop()
+  phone: string;
+  @Prop()
+  address: string;
 
-  @Prop({ required: true, enum: Role, default: Role.USER })
+  @Prop({ enum: Role, default: Role.USER })
   role: string;
 
   @Prop()

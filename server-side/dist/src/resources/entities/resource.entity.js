@@ -29,15 +29,15 @@ let Resources = class Resources {
 };
 exports.Resources = Resources;
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Resources.prototype, "name", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Resources.prototype, "description", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", Number)
 ], Resources.prototype, "quantity", void 0);
 __decorate([
@@ -45,11 +45,11 @@ __decorate([
     __metadata("design:type", String)
 ], Resources.prototype, "status", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", Number)
 ], Resources.prototype, "latitude", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", Number)
 ], Resources.prototype, "longitude", void 0);
 __decorate([
@@ -57,7 +57,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Resources.prototype, "expiryDate", void 0);
 exports.Resources = Resources = __decorate([
-    (0, mongoose_1.Schema)({ timestamps: true, versionKey: false, strict: true }),
+    (0, mongoose_1.Schema)({ timestamps: true, versionKey: false }),
     (0, mongoose_1.Schema)()
 ], Resources);
 exports.ResourcesSchema = mongoose_1.SchemaFactory.createForClass(Resources);
