@@ -31,17 +31,26 @@ export class User {
 
   @Prop({ enum: Role, default: Role.USER })
   role: string;
+  @Prop()
+  isAvailable?: boolean;
 
-  @Prop()
-  profileImage?: string;
-
-  @Prop()
-  isAuthenticated?: boolean;
-  @Prop()
-  rememberMe?: boolean;
+  @Prop({
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: { type: [Number], default: undefined },
+  })
+  currentLocation?: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.index({ currentLocation: '2dsphere' });
+
 
 // @Prop({ required: true, minlength: 8,match: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).*$/})
 //   @MinLength(8)

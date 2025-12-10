@@ -12,9 +12,7 @@ declare const CreateUserDto_base: import("nestjs-zod").ZodDto<z.ZodObject<{
         volunteer: "volunteer";
         victim: "victim";
     }>>;
-    profileImage: z.ZodOptional<z.ZodString>;
-    isAuthenticated: z.ZodOptional<z.ZodBoolean>;
-    rememberMe: z.ZodOptional<z.ZodBoolean>;
+    isAvailable: z.ZodOptional<z.ZodBoolean>;
 }, z.core.$strip>> & {
     io: "input";
 };

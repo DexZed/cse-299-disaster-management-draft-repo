@@ -14,6 +14,8 @@ declare const CreateResourceDto_base: import("nestjs-zod").ZodDto<z.ZodObject<{
     latitude: z.ZodOptional<z.ZodNumber>;
     image: z.ZodOptional<z.ZodString>;
     expiryDate: z.ZodOptional<z.ZodDate>;
+    totalUnits: z.ZodOptional<z.ZodNumber>;
+    availableUnits: z.ZodOptional<z.ZodNumber>;
 }, z.core.$strip>> & {
     io: "input";
 };

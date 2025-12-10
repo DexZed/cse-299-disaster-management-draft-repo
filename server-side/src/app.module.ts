@@ -9,6 +9,9 @@ import { Connection } from 'mongoose';
 import { ResourcesModule } from './resources/resources.module';
 import { ChatModule } from './chat/chat.module';
 import { LocationModule } from './location/location.module';
+import { IncidentModule } from './incident/incident.module';
+import { GeoModule } from './geo/geo.module';
+import { AssignmentModule } from './assignment/assignment.module';
 
 @Module({
   imports: [
@@ -36,6 +39,9 @@ import { LocationModule } from './location/location.module';
     ResourcesModule,
     ChatModule,
     LocationModule,
+    IncidentModule,
+    GeoModule,
+    AssignmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -26,6 +26,8 @@ let Resources = class Resources {
     latitude;
     longitude;
     expiryDate;
+    totalUnits;
+    availableUnits;
 };
 exports.Resources = Resources;
 __decorate([
@@ -56,6 +58,14 @@ __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", Date)
 ], Resources.prototype, "expiryDate", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", Number)
+], Resources.prototype, "totalUnits", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", Number)
+], Resources.prototype, "availableUnits", void 0);
 exports.Resources = Resources = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true, versionKey: false }),
     (0, mongoose_1.Schema)()

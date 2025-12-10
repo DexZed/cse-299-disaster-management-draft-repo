@@ -14,9 +14,11 @@ export declare class User {
     phone: string;
     address: string;
     role: string;
-    profileImage?: string;
-    isAuthenticated?: boolean;
-    rememberMe?: boolean;
+    isAvailable?: boolean;
+    currentLocation?: {
+        type: 'Point';
+        coordinates: [number, number];
+    };
 }
 export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User, any, {}> & User & {
     _id: import("mongoose").Types.ObjectId;

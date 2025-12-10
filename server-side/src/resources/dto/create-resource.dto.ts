@@ -15,7 +15,8 @@ const ResourcesSchema = z.object({
     latitude: z.number().optional(),
     image: z.string().optional(),
     expiryDate: z.date().optional(),
-
+    totalUnits: z.number().optional(),
+    availableUnits: z.number().optional(),
 });
 
 

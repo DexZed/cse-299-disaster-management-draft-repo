@@ -30,6 +30,11 @@ export class Resources {
 
   @Prop()
   expiryDate: Date;
+  @Prop()
+  totalUnits: number;
+
+  @Prop()
+  availableUnits: number;
 }
 
 export const ResourcesSchema = SchemaFactory.createForClass(Resources);

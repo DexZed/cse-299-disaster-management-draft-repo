@@ -11,9 +11,7 @@ const UserSchema = zod_1.z.object({
     email: zod_1.z.email().optional(),
     password: create_resource_dto_1.mongoSafeString.optional(),
     role: zod_1.z.enum(['admin', 'user', 'affected', 'volunteer', 'victim']).optional(),
-    profileImage: create_resource_dto_1.mongoSafeString.optional(),
-    isAuthenticated: zod_1.z.boolean().optional(),
-    rememberMe: zod_1.z.boolean().optional(),
+    isAvailable: zod_1.z.boolean().optional(),
 });
 class CreateUserDto extends (0, nestjs_zod_1.createZodDto)(UserSchema) {
 }

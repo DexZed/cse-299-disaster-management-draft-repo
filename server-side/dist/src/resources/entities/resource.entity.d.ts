@@ -14,6 +14,8 @@ export declare class Resources {
     latitude: number;
     longitude: number;
     expiryDate: Date;
+    totalUnits: number;
+    availableUnits: number;
 }
 export declare const ResourcesSchema: import("mongoose").Schema<Resources, import("mongoose").Model<Resources, any, any, any, import("mongoose").Document<unknown, any, Resources, any, {}> & Resources & {
     _id: import("mongoose").Types.ObjectId;

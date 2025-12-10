@@ -17,6 +17,9 @@ const mongoose_1 = require("@nestjs/mongoose");
 const resources_module_1 = require("./resources/resources.module");
 const chat_module_1 = require("./chat/chat.module");
 const location_module_1 = require("./location/location.module");
+const incident_module_1 = require("./incident/incident.module");
+const geo_module_1 = require("./geo/geo.module");
+const assignment_module_1 = require("./assignment/assignment.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -46,6 +49,9 @@ exports.AppModule = AppModule = __decorate([
             resources_module_1.ResourcesModule,
             chat_module_1.ChatModule,
             location_module_1.LocationModule,
+            incident_module_1.IncidentModule,
+            geo_module_1.GeoModule,
+            assignment_module_1.AssignmentModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

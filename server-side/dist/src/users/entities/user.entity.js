@@ -27,9 +27,8 @@ let User = class User {
     phone;
     address;
     role;
-    profileImage;
-    isAuthenticated;
-    rememberMe;
+    isAvailable;
+    currentLocation;
 };
 exports.User = User;
 __decorate([
@@ -59,19 +58,23 @@ __decorate([
 ], User.prototype, "role", void 0);
 __decorate([
     (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
-], User.prototype, "profileImage", void 0);
-__decorate([
-    (0, mongoose_1.Prop)(),
     __metadata("design:type", Boolean)
-], User.prototype, "isAuthenticated", void 0);
+], User.prototype, "isAvailable", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", Boolean)
-], User.prototype, "rememberMe", void 0);
+    (0, mongoose_1.Prop)({
+        type: {
+            type: String,
+            enum: ['Point'],
+            default: 'Point',
+        },
+        coordinates: { type: [Number], default: undefined },
+    }),
+    __metadata("design:type", Object)
+], User.prototype, "currentLocation", void 0);
 exports.User = User = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true, versionKey: false }),
     (0, mongoose_1.Schema)()
 ], User);
 exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
+exports.UserSchema.index({ currentLocation: '2dsphere' });
 //# sourceMappingURL=user.entity.js.map

@@ -17,6 +17,8 @@ const ResourcesSchema = zod_1.z.object({
     latitude: zod_1.z.number().optional(),
     image: zod_1.z.string().optional(),
     expiryDate: zod_1.z.date().optional(),
+    totalUnits: zod_1.z.number().optional(),
+    availableUnits: zod_1.z.number().optional(),
 });
 class CreateResourceDto extends (0, nestjs_zod_1.createZodDto)(ResourcesSchema) {
 }
