@@ -40,7 +40,7 @@ export default function ChatbotScreen() {
   const flatListRef = useRef<FlatList>(null);
   const wsRef = useRef<WebSocket | null>(null);
 
-  const WS_URL = "wss://cse-299-disaster-management-draft-r.vercel.app/chat";
+  const WS_URL = "wss://cse-299-disaster-management-draft-repo.onrender.com/chat";
 
   // 🔌 Initialize WebSocket
   useEffect(() => {

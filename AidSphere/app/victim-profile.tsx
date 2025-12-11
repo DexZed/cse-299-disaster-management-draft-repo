@@ -5,7 +5,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
   TextInput,
   Modal,
   Alert,
@@ -15,10 +14,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { useAppSelector } from '../store/hooks';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Backend URL
-const API_URL = "https://cse-299-disaster-management-draft-r.vercel.app/api/v1/users";
+const API_URL = "https://cse-299-disaster-management-draft-repo.onrender.com/api/v1/users";
 
 export default function VictimProfilePage() {
   const router = useRouter();

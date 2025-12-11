@@ -14,7 +14,7 @@ export class LocationService {
   // Create or update location
   async updateLocation(dto: UpdateLocationDto) {
     // Whitelist only the desired fields to be updated.
-    const allowedFields = ['latitude', 'longitude', 'status', 'otherField'];
+    const allowedFields = ['latitude', 'longitude', 'status'];
     const update: Partial<Location> = {};
     for (const key of allowedFields) {
       if (key in dto) {
